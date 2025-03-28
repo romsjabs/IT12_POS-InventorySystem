@@ -4,28 +4,155 @@ a {
     text-decoration: none;
 }
 
-/* main */
-
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 /* header */
 header {
     display: flex;
-    padding: 30px;
-    justify-content: space-between;
-    background-color: #009192;
+    justify-content: center;
 }
 
-#header {
+.header.wrapper {
+    background-color: #009192;
+    display: flex;
+    padding: 20px;
+    gap: 800px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+@media (max-width: 1220px) {
+    .header.wrapper {
+        gap: 600px;
+    }
+}
+
+@media (max-width: 1020px) {
+    .header.wrapper {
+        gap: 400px;
+    }
+}
+
+@media (max-width: 820px) {
+    .header.wrapper {
+        gap: 200px;
+    }
+}
+
+@media (max-width: 620px) {
+    .header.wrapper {
+        gap: 100px;
+    }
+}
+
+#original, .name, .fa-solid {
     color: white;
 }
 
+.title {
+    padding: 10px;
+}
+
+/* header buttons */
+
 .buttons {
     display: flex;
-    gap: 30px;
+    gap: 10px;
+}
 
+.original {
+    display: flex;
+    gap: 5px;
+}
+
+#original {
+    padding: 10px 15px 10px 15px;
+}
+
+#original:hover {
+    background-color: #095e5e;
+    border-radius: 8px;
+}
+
+.responsive {
+    display: none;
+}
+
+@media (max-width: 1300px) {
+    .header.wrapper {
+        gap: 600px;
+    }
+}
+
+@media (max-width: 1090px) {
+    .header.wrapper {
+        gap: 400px;
+    }
+}
+
+@media (max-width: 890px) {
+    .header.wrapper {
+        gap: 200px;
+    }
+}
+
+@media (max-width: 690px) {
+    .header.wrapper {
+        gap: 100px;
+    }
+}
+
+@media (max-width: 590px) {
+    .original {
+        display: none;
+    }
+    
+    .header.wrapper {
+        gap: 100px;
+    }
+
+    .responsive {
+        display: block;
+        cursor: pointer;
+        padding: 10px 15px 10px 15px;
+    }
+    
+    .responsive:hover {
+        background-color: #095e5e;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 420px) {
+    .header.wrapper {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 350px) {
+    .header.wrapper {
+        gap: 0px;
+    }
+}
+
+@media (max-width: 320px) {
+    header {
+        padding: 0px 10px 0px 10px;
+    }
+}
+
+/* content */
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.wrapper1 {
+    display: flex;
+    gap: 30px;
+}
+
+.introduction {
+    display: flex;
+    flex-direction: column;
 }
