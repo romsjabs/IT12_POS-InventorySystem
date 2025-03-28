@@ -1,17 +1,31 @@
 /* © 2025 Romar Jabez */
 
+a {
+    text-decoration: none;
+}
+
+/* main */
+
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 
 /* header */
 header {
     display: flex;
     padding: 30px;
-    gap: 500px;
     justify-content: space-between;
+    background-color: #009192;
 }
 
+#header {
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    gap: 30px;
+
+}
