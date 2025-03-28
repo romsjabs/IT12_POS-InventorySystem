@@ -1,7 +1,62 @@
 /* © 2025 Romar Jabez */
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 a {
     text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #009192;
+    border-color: #009192;
+}
+
+.btn-primary:hover {
+    background-color: #144d4d;
+    border-color: #144d4d;
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: #144d4d !important;
+    border-color: #144d4d !important;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.5);
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+    border-color: #009192;
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+}
+
+.form-control:hover,
+.form-select:hover,
+textarea:hover {
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+}
+
+.form-check-input:focus {
+    border-color: #009192;
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+    outline: 0;
+}
+
+.form-check-input:checked {
+    background-color: #009192;
+    border-color: #009192;
+}
+
+.form-check-input:hover {
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
 }
 
 /* header */
@@ -17,6 +72,9 @@ header {
     gap: 800px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    -webkit-box-shadow: 0px 4px 18px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 18px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 18px -6px rgba(0,0,0,0.75);
 }
 
 @media (max-width: 1220px) {
@@ -43,12 +101,22 @@ header {
     }
 }
 
-#original, .name, .fa-solid {
+#title, #original, .name, .fa-solid {
     color: white;
 }
 
 .title {
+    font-weight: bold;
     padding: 10px;
+}
+
+#title {
+    transition: 0.3s;
+}
+
+#title:hover {
+    color: #0d3f3f;
+    transition: 0.3s;
 }
 
 /* header buttons */
@@ -144,15 +212,5 @@ header {
 main {
     display: flex;
     justify-content: center;
-    padding: 50px;
-}
-
-.wrapper1 {
-    display: flex;
-    gap: 30px;
-}
-
-.introduction {
-    display: flex;
-    flex-direction: column;
+    padding: 150px;
 }
