@@ -4,6 +4,7 @@
     display: flex;
     align-items: center;
     gap: 130px;
+    transform: translateY(80px);
 }
 
 body {
@@ -37,7 +38,7 @@ body {
 
 /* credentials */
 
-.credentials {
+.container2 {
     background-color: lightgray;
     padding: 30px;
     border-radius: 13px;
@@ -70,6 +71,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    white-space: nowrap;
 }
 
 .login-btn button {
@@ -97,4 +99,43 @@ body {
 
 #new-user:hover {
     color: #164141;
+}
+
+@media (max-width: 890px) {
+    .wrapper1 {
+        flex-direction: column;
+    }
+
+    .container1, .container2 {
+        margin: -50px 0 0 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .container2 {
+        width: 300px;
+    }
+
+    .login-container1 {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 350px) {
+    .wrapper1 {
+        width: 250px;
+    }
+}
+
+@media (max-width: 320px) {
+    .container2 {
+        width: 230px;
+    }
+
+    .login-container1, .new-user {
+        flex-direction: column;
+        gap: 0;
+        align-items: center;
+    }
 }
