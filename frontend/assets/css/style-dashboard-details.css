@@ -1,0 +1,106 @@
+/* © 2025 Romar Jabez */
+
+main {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+a {
+    color: white;
+}
+
+/* menu */
+
+.wrapper1 {
+    background-color: #246868;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 84px 0 0 0;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 10px 20px;
+    gap: 8px;
+}
+
+.menu-item {
+    width: 230px;
+    padding: 10px;
+    border-radius: 8px
+}
+
+.menu-item:hover {
+    background-color: #173d3d;
+    cursor: pointer;
+}
+
+/* content */
+
+.wrapper2 {
+    margin: 110px 0 0 0;
+    width: 860px;
+}
+
+.container1 {
+    display: flex;
+    gap: 15px;
+}
+
+.protip {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 0 0;
+}
+
+.protip-wrapper {
+    background-color: #C6E6E6;
+    color: #003030;
+    border: 1px solid #009192;
+    display: flex;
+    gap: 6px;
+    width: 650px;
+    border-radius: 8px;
+    padding: 10px 15px 10px 15px;
+}
+
+.details {
+    margin: 30px 0 0 0;
+    background-color: lightgray;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+label[for="est-name"], label[for="est-address"],
+label[for="est-contact-number"], label[for="est-tin-number"] {
+    display: flex;
+    gap: 5px;
+    white-space: nowrap;
+    align-items: center;
+}
+
+.est-name, .est-address, .est-contact-number, .est-tin-number {
+    display: flex;
+    gap: 30px;
+}
+
+.fa-solid.fa-circle-exclamation,
+.fa-solid.fa-building-columns,
+.fa-solid.fa-location-dot,
+.fa-solid.fa-phone,
+.fa-solid.fa-id-card {
+    color: #212529;
+}
+
+.buttons {
+    margin: 10px 0 0 0;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}

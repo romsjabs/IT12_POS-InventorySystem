@@ -130,7 +130,7 @@ header {
 
 /* header buttons */
 
-.buttons {
+.header-buttons {
     display: flex;
     gap: 10px;
 }
