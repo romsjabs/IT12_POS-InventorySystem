@@ -54,3 +54,41 @@ a {
     gap: 4px;
     justify-content: flex-end;
 }
+
+#product-image {
+    border-radius: 10px;
+}
+
+.fa-solid.fa-circle,
+.fa-solid.fa-xmark {
+    color: white;
+}
+
+.fa-solid.fa-circle {
+    font-size: 8px;
+    transform: translateY(-2px);
+}
+
+.fa-solid.fa-xmark {
+    font-size: 10px;
+    transform: translateY(-1px);
+}
+
+.in-stock {
+    background-color: #207e20;
+}
+
+.out-of-stock {
+    background-color: #c42222;
+}
+
+.in-stock, .out-of-stock {
+    display: inline-flex;
+    color: white;
+    border-radius: 5px;
+    gap: 5px;
+    padding: 2px 5px 2px 5px;
+    font-size: 14px;
+    align-items: center;
+    vertical-align: middle;
+}
