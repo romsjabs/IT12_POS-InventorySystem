@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Cashier View</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/pos-cashier.css">
+</head>
+<body>
+
+    <header>
+
+        <div class="est-name">
+            POS and Inventory System
+        </div>
+
+        <!-- Tab Navigation -->
+
+        <div class="version">
+
+            <span>
+                <span><i class="fa-solid fa-circle-info"></i></span>
+                <span>Version</span>
+            </span>
+
+            <span>1.0.0</span>
+
+        </div>
+
+        <div class="date-time">
+
+            <div class="date">
+            
+                <span><i class="fa-solid fa-calendar-days"></i></span>
+                <span id="current-date"></span>
+
+            </div>
+
+            <div class="time">
+
+                <span><i class="fa-regular fa-clock"></i></span>
+                <span id="current-time"></span>
+
+            </div>
+
+        </div>    
+
+        <div class="sales">
+
+            <span>
+                <span><i class="fa-solid fa-money-bill"></i></span>
+                <span>Sales</span>
+            </span>
+
+            <span>₱ 0.00</span>
+
+        </div>
+
+        <div class="checkouts">
+
+            <span>
+                <span><i class="fa-solid fa-cart-shopping"></i></span>
+                <span>Checkouts</span>
+            </span>
+
+            <span>0</span>
+
+        </div>
+
+        <div class="user">
+
+            <span>
+                <span><i class="fa-solid fa-circle-user"></i></span>
+                <span>Cashier</span>
+            </span>
+            
+            <span>Lorem Ipsum</span>
+
+        </div>
+
+        <div class="logout">
+
+            <span><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span>Logout</span>
+
+        </div>
+
+    </header>
+
+    <main>
+
+        <!-- Products -->
+
+        <div class="wrapper1">
+
+            <div class="item-buttons">
+
+                <div class="item-button">
+
+                    <span><i class="inventory-icon fa-solid fa-border-all"></i></span>
+                    <span class="inventory-label">All</span>
+
+                </div>
+
+                <div class="item-button">
+
+                    <span><i class="fa-solid fa-layer-group"></i></span>
+                    <span class="inventory-label">Category</span>
+
+                </div>
+
+                <div class="item-button">
+
+                    <span><i class="fa-solid fa-layer-group"></i></span>
+                    <span class="inventory-label">Category</span>
+
+                </div>
+
+            </div>
+
+        </div>
+    
+        <div class="wrapper2">
+            
+            <div class="inventory-list">
+
+                <div class="inventory-search">
+
+                    <span>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+
+                    <span>
+                        Search for products..
+                    </span>
+
+                </div>
+
+                <div class="items-wrapper">
+
+                    <div class="item">
+
+                        <img id="item-image" src="assets/img/product_image.png" alt="Product Image">
+    
+                        <span class="item-name">Product 1</span>
+    
+                    </div>
+
+                    <div class="item">
+
+                        <img id="item-image" src="assets/img/product_image.png" alt="Product Image">
+    
+                        <span class="item-name">Product</span>
+    
+                    </div>
+
+                    <div class="item">
+
+                        <img id="item-image" src="assets/img/product_image.png" alt="Product Image">
+    
+                        <span class="item-name">Product</span>
+    
+                    </div>
+
+                    <div class="item">
+
+                        <img id="item-image" src="assets/img/product_image.png" alt="Product Image">
+    
+                        <span class="item-name">Product</span>
+    
+                    </div>
+
+                    <div class="item">
+
+                        <img id="item-image" src="assets/img/product_image.png" alt="Product Image" width="100">
+    
+                        <span class="item-name">Product</span>
+    
+                    </div>
+
+                </div>
+
+            </div>
+    
+        </div>
+
+        <!-- Transactions -->
+    
+        <div class="wrapper3">
+
+            <div class="container1">
+
+                <div class="products-list">
+    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product SKU/ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Qty</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>4-800020-021112</td>
+                                <td>
+                                    <div class="product-name">
+                                        <img src="assets/img/product_image.png" alt="Product Image" width="50">
+                                        <span>Product 1</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="qty">
+                                        <button class="qty-btn btn btn-secondary btn-sm"><i class="fa-solid fa-minus"></i></button>
+                                        <span>1</span>
+                                        <button class="qty-btn btn btn-secondary btn-sm"><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                </td>
+                                <td>₱ 100.00</td>
+                                <td>₱ 100.00</td>
+                                <td>
+                                    <button class="delete-btn btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+    
+                </div>
+
+            </div>
+
+            <div class="container2">
+
+                <div class="pos-wrapper1">
+
+                    <div class="screen">
+                        ₱ 0.00
+                    </div>
+    
+                    <div class="amount">
+    
+                        <div class="amount1">
+    
+                            <div class="change">
+        
+                                <h4>Change:</h4>
+                                <h4>₱ 0.00</h4>
+            
+                            </div>
+        
+                        </div>
+        
+                        <div class="amount2">
+        
+                            <div class="subtotal">
+        
+                                <h4>Subtotal:</h4>
+                                <h4>₱ 0.00</h4>
+        
+                            </div>
+        
+                            <div class="discount">
+        
+                                <h4>Discount:</h4>
+                                <h4>₱ 0.00</h4>
+        
+                            </div>
+        
+                            <div class="grand-total">
+        
+                                <h3>Grand Total:</h3>
+                                <h1>₱ 10,000.00</h1>
+        
+                            </div>
+        
+                        </div>
+    
+                    </div>
+
+                </div>
+
+                <div class="pos-wrapper2">
+
+                    <div class="numpad">
+
+                        <div class="numpad-buttons">
+    
+                            <div class="numpad-wrapper1">
+    
+                                <h1 class="numpad-key" onclick="addDigit('7')">7</h1>
+                                <h1 class="numpad-key" onclick="addDigit('8')">8</h1>
+                                <h1 class="numpad-key">9</h1>
+    
+                            </div>
+    
+                            <div class="numpad-wrapper2">
+    
+                                <h1 class="numpad-key">4</h1>
+                                <h1 class="numpad-key">5</h1>
+                                <h1 class="numpad-key">6</h1>
+    
+                            </div>
+    
+                            <div class="numpad-wrapper3">
+    
+                                <h1 class="numpad-key">1</h1>
+                                <h1 class="numpad-key">2</h1>
+                                <h1 class="numpad-key">3</h1>
+    
+                            </div>
+    
+                            <div class="numpad-wrapper4">
+    
+                                <h1 class="numpad-key">0</h1>
+                                <h1 class="numpad-key clear">C</h1>
+                                <h1 class="numpad-key enter"><i class="fa-solid fa-right-to-bracket"></i></h1>
+    
+                            </div>
+    
+                        </div>
+    
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="assets/js/pos.js"></script>
+</body>
+</html>

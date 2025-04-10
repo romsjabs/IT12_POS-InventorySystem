@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt</title>
+  <style>
+    * {
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    @media print {
+      body {
+        width: 80mm;
+        margin: 0;
+      }
+    }
+
+    .receipt {
+      width: 80mm;
+      padding: 10px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .line {
+      border-top: 1px dashed #000;
+      margin: 5px 0;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="center bold">YOUR STORE NAME</div>
+    <div class="center">123 Sample St., Samal</div>
+    <div class="center">TIN: 123-456-789</div>
+    <div class="line"></div>
+
+    <div class="row"><span>Qty x Item</span><span>Amount</span></div>
+    <div class="row"><span>1 x Burger</span><span>₱100.00</span></div>
+    <div class="row"><span>2 x Fries</span><span>₱50.00</span></div>
+
+    <div class="line"></div>
+    <div class="row bold"><span>Subtotal</span><span>₱200.00</span></div>
+    <div class="row"><span>VAT (12%)</span><span>₱24.00</span></div>
+    <div class="row"><span>Discount</span><span>-₱10.00</span></div>
+    <div class="line"></div>
+    <div class="row bold"><span>Total</span><span>₱214.00</span></div>
+
+    <div class="line"></div>
+    <div class="center">Thank you!</div>
+    <div class="center">Printed: 2025-04-08</div>
+  </div>
+
+  <script>
+    window.print(); // Automatically triggers the print dialog
+  </script>
+</body>
+</html>
