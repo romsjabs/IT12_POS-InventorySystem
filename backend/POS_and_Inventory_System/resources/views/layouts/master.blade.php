@@ -10,7 +10,11 @@
     @include('partials.header')
 
     <main>
+
+        @include('partials.dashboard-menu')
+
         @yield('content')
+        
     </main>
 
     @include('partials.footer')

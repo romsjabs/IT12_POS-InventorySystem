@@ -1,52 +1,141 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('layouts.guest')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+@section('title', 'Register')
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+@section('content')
+<div class="wrapper1">
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <div class="registration">
+        
+        <form action="{{ route('register') }}" method="POST">
+            @csrf
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            <div class="registration-title">
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                <h3 class="title">Register</h3>
+                <p class="description">Please fill in the form below to create an account.</p>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            </div>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+            <hr>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            <div class="reg-container1">
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+                <div class="row g-1">
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                    <div class="firstname form-floating mb-1 col-md-6">
+                        <input type="text" name="firstname" id="firstname" class="form-control" placeholder="First name">
+                        <label for="firstname">First name</label>
+                    </div>
+
+                    <div class="middlename form-floating col-md-6">
+                        <input type="text" name="middlename" id="middlename" class="form-control" placeholder="Middle name">
+                        <label for="middlename">Middle name</label>
+                    </div>
+
+                </div>
+
+                <div class="row g-1 mt-1">
+
+                    <div class="lastname form-floating mb-1 col-md-6">
+                        <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Last name">
+                        <label for="lastname">Last name</label>
+                    </div>
+
+                    <div class="extension form-floating col-md-6">
+
+                        <select name="extension" id="extension" class="form-select" placeholder="Extension">
+                            <option selected value="N/A">N/A</option>
+                            <option value="Jr.">Jr.</option>
+                            <option value="Sr.">Sr.</option>
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                        </select>
+                        <label for="extension">Extension</label>
+
+                    </div>
+                    
+                </div>
+
+                <div class="row g-1 mt-1">
+
+                    <div class="gender form-floating mb-1 col-md-6">
+
+                        <select name="gender" id="gender" class="form-select" placeholder="Gender">
+                            <option selected disabled>Select..</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <label for="gender">Gender</label>
+
+                    </div>
+
+                    <div class="birthdate form-floating col-md-6">
+                        <input type="date" name="birthdate" id="birthdate" class="form-control" placeholder="Birthdate">
+                        <label for="birthdate">Birthdate</label>
+                    </div>
+
+                </div>
+                
+            </div>
+
+            <hr>
+
+            <div class="reg-container2 mt-2">
+
+                <div class="row g-1">
+
+                    <div class="username form-floating mb-1 col-md-12">
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+                        <label for="username">Username</label>
+                    </div>
+
+                    <div class="email-address form-floating mb-1 col-md-12">
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Email address">
+                        <label for="email">Email address</label>
+                    </div>
+
+                </div>
+
+                <div class="row g-1 mt-0">
+
+                    <div class="password form-floating mb-1 col-md-6">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                        <label for="password">Password</label>
+                    </div>
+
+                    <div class="confirm-password form-floating mb-1 col-md-6">
+                        <input type="password" name="confirm_password" id="confirm-password" class="form-control" placeholder="Confirm password">
+                        <label for="confirm-password">Confirm password</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="reg-container3 mt-2">
+
+                <button class="btn btn-primary signup-btn">
+                    
+                    <span>
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </span>
+
+                    <span>
+                        Sign up
+                    </span>
+                    
+                </button>
+                
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+@endsection
