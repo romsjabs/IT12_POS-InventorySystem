@@ -2,8 +2,6 @@
 
 @section('title', 'Details')
 
-@include('partials.dashboard-menu')
-
 @section('content')
 <div class="wrapper2">
 
