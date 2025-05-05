@@ -1,6 +1,8 @@
+<div class="wrapper1">
+
 <div class="menu">
 
-    <a href="{{ route('dashboard') }}" class="d-flex gap-1" style="{{ request()->routeIs('dashboard') ? 'background-color: #1b4c4c; border-radius: 8px;' : '' }}">
+    <a href="{{ route('dashboard.home') }}" class="d-flex gap-1" style="{{ request()->routeIs('dashboard.home') ? 'background-color: #1b4c4c; border-radius: 8px;' : '' }}">
 
         <div class="menu-item">
 
@@ -83,5 +85,7 @@
         </div>
 
     </a>
+
+</div>
 
 </div>

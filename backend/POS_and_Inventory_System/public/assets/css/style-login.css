@@ -1,0 +1,141 @@
+/* © 2025 Romar Jabez */
+
+.wrapper1 {
+    display: flex;
+    align-items: center;
+    gap: 130px;
+    transform: translateY(80px);
+}
+
+body {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* introduction */
+
+.container1 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.intro1 ,.intro2, .intro3 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: white;
+}
+
+.description {
+    display: flex;
+    max-width: 350px;
+    color: white;
+}
+
+/* credentials */
+
+.container2 {
+    background-color: lightgray;
+    padding: 30px;
+    border-radius: 13px;
+    -webkit-box-shadow: 0px 4px 18px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 18px -3px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 18px -3px rgba(0,0,0,0.75);
+}
+
+.cred-wrapper1, .cred-wrapper2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.cred-wrapper1 {
+    gap: 10px;
+}
+
+.cred-wrapper2 {
+    margin: 10px 0 0 0;
+    gap: 10px;
+}
+
+.login-container1 {
+    display: flex;
+    gap: 80px;
+    white-space: nowrap;
+}
+
+.login-container2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    white-space: nowrap;
+}
+
+.login-btn button {
+    width: 100%;
+}
+
+#forgot-password {
+    color: #212529;
+}
+
+#forgot-password:hover {
+    color: #0a6363;
+}
+
+.new-user {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+#new-user {
+    color: #0a6363;
+    font-weight: 500;
+}
+
+#new-user:hover {
+    color: #164141;
+}
+
+@media (max-width: 890px) {
+    .wrapper1 {
+        flex-direction: column;
+    }
+
+    .container1, .container2 {
+        margin: -50px 0 0 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .container2 {
+        width: 300px;
+    }
+
+    .login-container1 {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 350px) {
+    .wrapper1 {
+        width: 250px;
+    }
+}
+
+@media (max-width: 320px) {
+    .container2 {
+        width: 230px;
+    }
+
+    .login-container1, .new-user {
+        flex-direction: column;
+        gap: 0;
+        align-items: center;
+    }
+}

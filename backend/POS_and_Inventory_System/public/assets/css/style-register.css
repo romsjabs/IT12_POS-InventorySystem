@@ -1,0 +1,78 @@
+/* © 2025 Romar Jabez */
+
+.wrapper1 {
+    display: flex;
+    align-items: center;
+    gap: 130px;
+    transform: translateY(20px);
+}
+
+body {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.registration {
+    background-color: lightgray;
+    padding: 30px;
+    border-radius: 13px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.registration-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+@media (max-width: 1600px) {
+    body {
+        overflow-y: scroll;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .registration {
+        width: 500px;
+    }
+}
+
+@media (max-width: 590px) {
+    .registration {
+        width: 400px;
+    }
+}
+
+@media (max-width: 420px) {
+    .registration {
+        width: 300px;
+    }
+}
+
+@media (max-width: 350px) {
+    .registration {
+        width: 250px;
+    }
+}
+
+.reg-container3 {
+    display: flex;
+    justify-content: center;
+}
+
+.signup-btn, .confirm-btn {
+    display: flex;
+    gap: 5px;
+}

@@ -1,0 +1,125 @@
+/* customer view */
+
+body {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+/* products list */
+
+.products-list {
+    width: 680px;
+    height: 470px;
+    overflow: auto;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+}
+
+/* pos current status */
+
+.current-item, .welcome-user, .rewards-card {
+    margin: 20px 0 0 0;
+    background-color: lightgray;
+    padding: 25px;
+    display: flex;
+    border-radius: 15px;
+    width: 680px;
+    height: 240px;
+}
+
+.current-item, .welcome-user {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rewards-card {
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+}
+
+.details-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* product */
+
+.item-container1 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* establishment logo */
+
+.wrapper2 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.establishment-logo {
+    background-color: #009192;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    width: 290px;
+    height: 124px;
+}
+
+/* establishment ad */
+
+.banner-ad {
+    background-color: #009192;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    width: 290px;
+    height: 370px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* checkout */
+
+.checkout-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.checkout1, .checkout2 {
+    background-color: lightgray;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.sub-item-price, .total-item-price {
+    display: flex;
+    gap: 5px;
+}
+
+.subtotal, .discount, .total,
+.amount-given, .change {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.amount {
+    display: flex;
+    gap: 5px;
+}

@@ -1,0 +1,228 @@
+/* © 2025 Romar Jabez */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #fefefe;
+}
+
+a {
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #009192;
+    border-color: #009192;
+}
+
+.btn-primary:hover {
+    background-color: #144d4d;
+    border-color: #144d4d;
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: #144d4d !important;
+    border-color: #144d4d !important;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.5);
+    background-color: #144d4d;
+    border-color: #144d4d;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+    border-color: #009192;
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+}
+
+.form-control:hover,
+.form-select:hover,
+textarea:hover {
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+}
+
+.form-check-input:focus {
+    border-color: #009192;
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+    outline: 0;
+}
+
+.form-check-input:checked {
+    background-color: #009192;
+    border-color: #009192;
+}
+
+.form-check-input:hover {
+    box-shadow: 0 0 0 0.25rem rgba(0, 145, 146, 0.25);
+}
+
+/* header */
+header {
+    display: flex;
+    justify-content: center;
+}
+
+.header.wrapper {
+    background-color: #009192;
+    display: flex;
+    padding: 20px;
+    gap: 800px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    -webkit-box-shadow: 0px 4px 18px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 18px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 18px -6px rgba(0,0,0,0.75);
+    position: fixed;
+    z-index: 1000;
+    align-items: center;
+}
+
+@media (max-width: 1220px) {
+    .header.wrapper {
+        gap: 600px;
+    }
+}
+
+@media (max-width: 1020px) {
+    .header.wrapper {
+        gap: 400px;
+    }
+}
+
+@media (max-width: 820px) {
+    .header.wrapper {
+        gap: 200px;
+    }
+}
+
+@media (max-width: 620px) {
+    .header.wrapper {
+        gap: 100px;
+    }
+}
+
+#title, #original, .name, .fa-solid {
+    color: white;
+}
+
+.title {
+    font-weight: bold;
+    padding: 10px;
+}
+
+#title {
+    transition: 0.3s;
+}
+
+#title:hover {
+    color: #0d3f3f;
+    transition: 0.3s;
+}
+
+/* header buttons */
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.original {
+    display: flex;
+    gap: 5px;
+}
+
+#original {
+    padding: 10px 15px 10px 15px;
+}
+
+#original:hover {
+    background-color: #095e5e;
+    border-radius: 8px;
+}
+
+.responsive {
+    display: none;
+}
+
+@media (max-width: 1300px) {
+    .header.wrapper {
+        gap: 600px;
+    }
+}
+
+@media (max-width: 1090px) {
+    .header.wrapper {
+        gap: 400px;
+    }
+}
+
+@media (max-width: 890px) {
+    .header.wrapper {
+        gap: 200px;
+    }
+}
+
+@media (max-width: 690px) {
+    .header.wrapper {
+        gap: 100px;
+    }
+}
+
+@media (max-width: 590px) {
+    .original {
+        display: none;
+    }
+    
+    .header.wrapper {
+        gap: 100px;
+    }
+
+    .responsive {
+        display: block;
+    }
+
+    .responsive-button {
+        cursor: pointer;
+        padding: 10px 15px 10px 15px;
+    }
+    
+    .responsive:hover {
+        background-color: #095e5e;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 420px) {
+    .header.wrapper {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 350px) {
+    .header.wrapper {
+        gap: 0px;
+    }
+}
+
+@media (max-width: 320px) {
+    header {
+        padding: 0px 10px 0px 10px;
+    }
+}
+
+/* content */
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 150px;
+}
