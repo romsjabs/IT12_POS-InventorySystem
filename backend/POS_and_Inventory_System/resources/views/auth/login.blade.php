@@ -1,47 +1,97 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.guest')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('title', 'Login')
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@section('content')
+<div class="wrapper1">
+
+    <div class="container1">
+
+        <div class="introduction">
+    
+            <h2 class="intro1">Introducing</h2>
+
+            <span class="intro2">
+                <h1>Point-of-Sale</h1>
+                <h2>&</h2>
+            </span>
+            
+            <span class="intro3">
+                <h1>Inventory</h1>
+                <h1>System</h1>
+            </span>
+
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="description">
+            A fast and lightweight POS and Inventory System that is perfect for small to medium businesses.
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+    </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+    <div class="container2">
+        
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <div class="cred-wrapper1">
+
+                <div class="form-floating">
+                    <input type="text" name="username_email" id="username-email" class="form-control" placeholder="Email or Username">
+                    <label for="username-email">Email or Username</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                    <label for="password">Password</label>
+                </div>
+
+            </div>
+
+            <div class="cred-wrapper2">
+
+                <div class="login-container1">
+
+                    <div class="remember-me">
+
+                        <div class="form-check">
+                            <input type="checkbox" value="1" name="remember_me" id="remember-me" class="form-check-input">
+                            <label for="remember-me" class="form-check-label">Remember me</label>
+                        </div>
+                        
+                    </div>
+
+                    <div class="forgot-password">
+
+                        <a id="forgot-password" href="forgot-password.html">Forgot password?</a>
+
+                    </div>
+
+                </div>
+
+                <div class="login-container2">
+
+                    <div class="login-btn">
+                        <button class="btn btn-primary" type="submit">Sign in</button>
+                    </div>
+
+                    <div class="new-user">
+                    
+                        <span>New user?</span>
+
+                        <span>
+                            <a id="new-user" href="register.html">Create an account</a>
+                        </span>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+@endsection
