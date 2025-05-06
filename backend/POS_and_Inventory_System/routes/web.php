@@ -26,6 +26,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard.home');
 Route::get('/dashboard/details', [DashboardController::class, 'details'])->name('dashboard.details');
+Route::post('dashboard/details/update', [DashboardController::class, 'updateDetails'])->name('dashboard.details.update');
 Route::get('/dashboard/products', [DashboardController::class, 'products'])->name('dashboard.products');
 Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
 Route::get('/dashboard/sales', [DashboardController::class, 'sales'])->name('dashboard.sales');

@@ -25,7 +25,7 @@
                 <div class="profile">
 
                     <div class="profile-icon">
-                        <img src="assets/img/owner_image.jpg" alt="User" width="30" height="30" class="rounded-circle">
+                        <img src="{{asset('assets/img/owner_image.jpg')}}" alt="User" width="30" height="30" class="rounded-circle">
                     </div>
 
                     <div class="profile-name">

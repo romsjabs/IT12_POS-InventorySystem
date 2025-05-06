@@ -50,10 +50,15 @@ a {
     gap: 15px;
 }
 
-.protip {
+.protip, .success {
     display: flex;
     justify-content: center;
     margin: 30px 0 0 0;
+}
+
+.success-wrapper {
+    background-color: #238b23;
+    color: #ffffff;
 }
 
 .protip-wrapper {
@@ -94,7 +99,8 @@ label[for="est-contact-number"], label[for="est-tin-number"] {
 .fa-solid.fa-building-columns,
 .fa-solid.fa-location-dot,
 .fa-solid.fa-phone,
-.fa-solid.fa-id-card {
+.fa-solid.fa-id-card,
+.fa-solid.fa-circle-check {
     color: #212529;
 }
 

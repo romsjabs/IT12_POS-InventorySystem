@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 
 @section('title', 'Details')
 
@@ -6,6 +6,8 @@
 <div class="wrapper2">
 
     <h1>Details</h1>
+
+    
 
     <div class="protip">
 
@@ -23,6 +25,8 @@
 
     </div>
 
+    <form action="{{ route('dashboard.details.update') }}" method="POST">
+        @csrf
     <div class="details">
 
         <div class="est-name">
@@ -39,7 +43,7 @@
 
             </label>
 
-            <input type="text" name="est-name" id="est-name" class="form-control" placeholder="RJC Industries, Inc." required>
+            <input value="{{ $establishmentDetails->est_name ?? '' }}" type="text" name="est_name" id="est-name" class="form-control" placeholder="RJC Industries, Inc." required>
 
         </div>
 
@@ -52,7 +56,7 @@
 
             </label>
 
-            <textarea class="form-control" name="est-address" id="est-address" rows="3" placeholder="123 Makabugto Drive, Ma-a, Davao City"></textarea>
+            <textarea class="form-control" name="est_address" id="est-address" rows="3" placeholder="123 Handeureul Drive, Ma-a, Davao City">{{ $establishmentDetails->est_address ?? '' }}</textarea>
 
         </div>
 
@@ -68,7 +72,7 @@
 
             </label>
 
-            <input type="text" name="est-contact-number" id="est-contact-number" class="form-control" placeholder="09123456789" required>
+            <input value="{{ $establishmentDetails->est_contact_number ?? '' }}" type="text" name="est_contact_number" id="est-contact-number" class="form-control" placeholder="09123456789" required>
 
         </div>
 
@@ -84,7 +88,7 @@
 
             </label>
 
-            <input type="text" name="est-tin-number" id="est-tin-number" class="form-control" placeholder="123-456-789" required>
+            <input value="{{ $establishmentDetails->est_tin_number ?? '' }}" type="text" name="est_tin_number" id="est-tin-number" class="form-control" placeholder="123-456-789" required>
 
         </div>
 
@@ -92,10 +96,12 @@
 
     <div class="buttons">
 
-        <button type="button" class="btn btn-primary" id="save-details">Save</button>
+        <button type="submit" class="btn btn-primary" id="save-details">Save</button>
         <button type="button" class="btn btn-secondary" id="cancel-details">Cancel</button>
 
     </div>
+
+    </form>
 
 </div>
 @endsection
