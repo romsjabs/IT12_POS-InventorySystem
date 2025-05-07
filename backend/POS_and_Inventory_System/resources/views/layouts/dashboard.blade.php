@@ -6,9 +6,8 @@
     <title>{{ $title ?? 'POS and Inventory System' }} | POS and Inventory System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style-dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-details.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style-signed-in.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style-signed-in.css')}}">
+    @yield('styles')
 </head>
 <body>
     @include('partials.header')
@@ -25,6 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('assets/js/details-edit.js') }}"></script>
+    <script src="{{ asset('assets/js/product.js')}}"></script>
 
     @include('partials.footer')
 

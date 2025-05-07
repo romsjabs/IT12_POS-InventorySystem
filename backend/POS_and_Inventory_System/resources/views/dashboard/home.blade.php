@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard')
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/style-dashboard.css') }}">
+@endsection
+
 @section('content')
 
 <div class="wrapper2">

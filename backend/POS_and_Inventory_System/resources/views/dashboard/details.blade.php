@@ -2,12 +2,16 @@
 
 @section('title', 'Details')
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-details.css') }}">
+@endsection
+
 @section('content')
 <div class="wrapper2">
 
     <h1>Details</h1>
 
-    
+
 
     <div class="protip">
 
@@ -25,7 +29,7 @@
 
     </div>
 
-    <form action="{{ route('dashboard.details.update') }}" method="POST">
+    <form action="{{ route('dashboard.details.store') }}" method="POST">
         @csrf
     <div class="details">
 

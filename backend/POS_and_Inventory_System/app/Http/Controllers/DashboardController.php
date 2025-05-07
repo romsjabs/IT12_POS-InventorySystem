@@ -28,7 +28,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function details()
+    public function viewDetails()
     {
 
         $establishmentDetails = EstablishmentDetails::first();
@@ -40,7 +40,7 @@ class DashboardController extends Controller
 
     }
 
-    public function updateDetails(Request $request)
+    public function storeDetails(Request $request)
     {
         $request->validate([
             'est_name' => 'required',
@@ -60,12 +60,46 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.details')->with('success', 'Details updated successfully');
     }
     
-    public function products()
+    public function viewProducts()
     {
         return view('dashboard.products', [
             'title' => 'Products',
             'products' => Products::all()
         ]);
+    }
+
+    public function storeProducts(Request $request)
+    {
+        $request->merge([
+            'product_price' => preg_replace('/[^\d.]/', '', $request->product_price),
+        ]);
+        
+        $validated = $request->validate([
+            'product_sku_id' => 'required|string|max:255|unique:products,product_sku_id',
+            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'product_name' => 'required|string|max:255',
+            'product_category' => 'required|string|max:255',
+            'product_price' => 'required|numeric|min:0',
+            'product_stock' => 'required|integer|min:0',
+        ]);
+
+        if ($request->hasFile('product_image')) {
+            $imagePath = $request->file('product_image')->store('products', 'public');
+        } else {
+            $imagePath = 'asets/images/product_image.png';
+        }
+
+        $product = new Products();
+        $product->product_sku_id = $validated['product_sku_id'];
+        $product->product_image = $imagePath;
+        $product->product_name = $validated['product_name'];
+        $product->product_category = $validated['product_category'];
+        $product->product_price = $validated['product_price'];
+        $product->product_stock = $validated['product_stock'];
+        $product->save();
+
+        return redirect()->back()->with('success', 'Product added successfully!');
+        
     }
 
     public function users()

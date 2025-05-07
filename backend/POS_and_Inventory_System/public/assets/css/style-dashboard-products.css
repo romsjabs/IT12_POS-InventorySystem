@@ -92,6 +92,7 @@ a {
     font-size: 14px;
     align-items: center;
     vertical-align: middle;
+    font-size: 12px;
 }
 
 /* crud */
@@ -137,4 +138,13 @@ a {
     background-color: transparent;
     border-bottom: 2px solid;
     outline: none;
+}
+
+.table-row, .table-data {
+    font-size: 13.5px !important;
+}
+
+.btn-sm.edit-product, .btn-sm.delete-product {
+    padding: 2px 5px;
+    font-size: 12px;
 }

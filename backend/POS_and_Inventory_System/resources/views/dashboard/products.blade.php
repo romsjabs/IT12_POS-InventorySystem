@@ -1,13 +1,22 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 
 @section('title', 'Products')
 
-@include('partials.dashboard-menu')
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-products.css') }}">
+@endsection
 
 @section('content')
 <div class="wrapper2">
 
     <h1>Products</h1>
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <div class="products">
 
@@ -23,10 +32,9 @@
 
             <div class="buttons">
             
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">New</button>
-                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
-                <button type="button" class="btn btn-secondary btn-sm">Save</button>
-                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button id="addButton" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">New</button>
+                <button id="editButton" type="button" class="btn btn-secondary btn-sm">Edit</button>
+                <button id="cancelButton" type="button" class="btn btn-secondary btn-sm d-none">Cancel</button>
 
             </div>
 
@@ -38,33 +46,34 @@
 
                 <thead>
                     <tr>
-                        <th scope="col">Date added</th>
-                        <th scope="col">Product SKU/ID</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Status</th>
+                        <th class="table-row" scope="col">Date added</th>
+                        <th class="table-row" scope="col">Product SKU/ID</th>
+                        <th class="table-row" scope="col">Product Name</th>
+                        <th class="table-row" scope="col">Category</th>
+                        <th class="table-row" scope="col">Price</th>
+                        <th class="table-row" scope="col">Stock</th>
+                        <th class="table-row" scope="col">Status</th>
+                        <th class="table-row d-none action-column" scope="col">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @forelse ($products as $product)
                     <tr>
-                        <td>{{ $product->created_at->format('Y-m-d') }}</td>
-                        <td>{{ $product->product_sku_id ?? 'N/A' }}</td>
-                        <td>
+                        <td class="table-data">{{ $product->created_at->format('Y-m-d') }}</td>
+                        <td class="table-data">{{ $product->product_sku_id ?? 'N/A' }}</td>
+                        <td class="table-data">
                             <span class="product-image">
-                                <img src="{{ asset('assets/img/product_image.png') }}" alt="Product Image" width="50" height="50">
+                                <img src="{{ asset('assets/img/product_image.png') }}" alt="Product Image" width="40" height="40">
                             </span>
                             <span class="product-name">
                                 {{ $product->product_name }}
                             </span>
                         </td>
-                        <td>{{ $product->product_category }}</td>
-                        <td>₱ {{ number_format($product->product_price) }}</td>
-                        <td>x {{ $product->product_stock }}</td>
-                        <td>
+                        <td class="table-data">{{ $product->product_category }}</td>
+                        <td class="table-data">₱ {{ number_format($product->product_price, 2) }}</td>
+                        <td class="table-data">x {{ $product->product_stock }}</td>
+                        <td class="table-data">
 
                             @if ($product->product_stock > 0)
 
@@ -96,6 +105,23 @@
 
                             @endif
                         </td>
+                        <td class="table-data d-none action-column">
+                            <div class="action-buttons">
+                                <!-- Edit Product Button -->
+                                <button type="button" class="btn btn-primary btn-sm edit-product" data-id="{{ $product->id }}" data-bs-toggle="modal" data-bs-target="#edit-modal">
+                                    Edit
+                                </button>
+                                <!-- Delete Product Button -->
+                                <button type="button" class="btn btn-danger btn-sm delete-product" data-id="{{ $product->id }}">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center">No products found</td>
+                        </tr>
+                        @endforelse
 
                     </tr>
                 </tbody>
@@ -107,6 +133,8 @@
     </div>
 
 </div>
-@endsection
 
 @include('dashboard.modals.product')
+
+@endsection
+
