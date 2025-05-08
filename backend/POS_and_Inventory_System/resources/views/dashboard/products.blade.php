@@ -26,15 +26,17 @@
 
                 <i class="fa-solid fa-magnifying-glass"></i>
 
-                <input type="search" id="session-search" name="search" placeholder="Search..">
+                <input type="search" id="products-search" name="search" placeholder="Search..">
 
             </div>
 
             <div class="buttons">
             
                 <button id="addButton" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">New</button>
-                <button id="editButton" type="button" class="btn btn-secondary btn-sm">Edit</button>
-                <button id="cancelButton" type="button" class="btn btn-secondary btn-sm d-none">Cancel</button>
+                @if ($products->count() > 0)
+                    <button id="editButton" type="button" class="btn btn-secondary btn-sm">Edit</button>
+                    <button id="cancelButton" type="button" class="btn btn-secondary btn-sm d-none">Cancel</button>
+                @endif
 
             </div>
 
@@ -57,14 +59,20 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="products-table-body">
                     @forelse ($products as $product)
                     <tr>
                         <td class="table-data">{{ $product->created_at->format('Y-m-d') }}</td>
                         <td class="table-data">{{ $product->product_sku_id ?? 'N/A' }}</td>
                         <td class="table-data">
+                            @php
+                                $productImage = $product->product_image && Storage::disk('public')
+                                    ->exists($product->product_image)
+                                    ? Storage::url($product->product_image)
+                                    : asset('storage/defaults/product_image.png');
+                            @endphp
                             <span class="product-image">
-                                <img src="{{ asset('assets/img/product_image.png') }}" alt="Product Image" width="40" height="40">
+                                <img src="{{ $productImage }}" alt="Product" width="40" height="40" style="object-fit: cover;">
                             </span>
                             <span class="product-name">
                                 {{ $product->product_name }}
@@ -108,11 +116,17 @@
                         <td class="table-data d-none action-column">
                             <div class="action-buttons">
                                 <!-- Edit Product Button -->
-                                <button type="button" class="btn btn-primary btn-sm edit-product" data-id="{{ $product->id }}" data-bs-toggle="modal" data-bs-target="#edit-modal">
+                                <button type="button" class="btn btn-primary btn-sm edit-product" data-id="{{ $product->id }}" data-name="{{ $product->product_name }}" data-sku="{{ $product->product_sku_id }}" data-category="{{ $product->product_category }}" data-price="{{ $product->product_price }}" data-stock="{{ $product->product_stock }}" data-image="{{ $product->product_image && Storage::disk('public')->exists($product->product_image) ? Storage::url($product->product_image) : asset('storage/defaults/product_image.png') }}" data-bs-toggle="modal" data-bs-target="#edit-modal">
                                     Edit
                                 </button>
                                 <!-- Delete Product Button -->
-                                <button type="button" class="btn btn-danger btn-sm delete-product" data-id="{{ $product->id }}">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-danger btn-sm delete-product" 
+                                    data-id="{{ $product->id }}" 
+                                    data-name="{{ $product->product_name }}" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deleteModal">
                                     Delete
                                 </button>
                             </div>
@@ -126,6 +140,12 @@
                     </tr>
                 </tbody>
 
+                <tbody id="no-results" style="display: none;">
+                    <tr>
+                        <td colspan="9" class="text-center fw-bold">No results found.</td>
+                    </tr>
+                </tbody>
+
             </table>
 
         </div>
@@ -134,7 +154,18 @@
 
 </div>
 
-@include('dashboard.modals.product')
+@include('dashboard.modals.products.add')
+@include('dashboard.modals.products.edit')
+@include('dashboard.modals.products.delete')
+
+<script>
+    // Check if there are validation errors and reopen the modal
+    @if ($errors->any())
+        document.addEventListener('DOMContentLoaded', function () {
+            var newModal = new bootstrap.Modal(document.getElementById('new-modal'));
+            newModal.show();
+        });
+    @endif
+</script>
 
 @endsection
-

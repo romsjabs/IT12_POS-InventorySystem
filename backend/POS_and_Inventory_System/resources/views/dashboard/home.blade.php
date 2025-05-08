@@ -150,18 +150,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($products as $product)
                         <tr>
-                            <td>2025-01-01</td>
-                            <td>Lingang guli</td>
-                            <td>x10</td>
-                            <td>PHP 500</td>
+                            <td class="table-data">
+                                {{ $product->created_at->format('Y-m-d') }}
+                            </td>
+                            <td class="table-data">
+                                {{ $product->product_name }}
+                            </td>
                         </tr>
-                        <tr>
-                            <td>2025-01-01</td>
-                            <td>Lingang guli</td>
-                            <td>x10</td>
-                            <td>PHP 500</td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
 

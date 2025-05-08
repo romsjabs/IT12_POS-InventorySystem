@@ -19,6 +19,11 @@ a {
     border-color: #009192;
 }
 
+.btn-primary:disabled {
+    background-color: #42adad;
+    border-color: #42adad;
+}
+
 .btn-primary:hover {
     background-color: #144d4d;
     border-color: #144d4d;

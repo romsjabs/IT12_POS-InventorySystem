@@ -11,8 +11,6 @@
 
     <h1>Details</h1>
 
-
-
     <div class="protip">
 
         <div class="protip-wrapper">

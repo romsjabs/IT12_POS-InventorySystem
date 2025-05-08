@@ -18,13 +18,15 @@ class DashboardController extends Controller
         $checkoutsCount = Checkouts::count();
         $productsCount = Products::count();
         $usersCount = Users::count();
+        $products = Products::all();
 
         return view('dashboard.home', [
             'title' => 'Dashboard',
             'salesCount' => $salesCount,
             'checkoutsCount'=> $checkoutsCount,
             'productsCount'=> $productsCount,
-            'usersCount'=> $usersCount
+            'usersCount'=> $usersCount,
+            'products' => $products
         ]);
     }
 
@@ -68,15 +70,15 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function storeProducts(Request $request)
+    public function storeProduct(Request $request)
     {
         $request->merge([
             'product_price' => preg_replace('/[^\d.]/', '', $request->product_price),
         ]);
         
         $validated = $request->validate([
-            'product_sku_id' => 'required|string|max:255|unique:products,product_sku_id',
-            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'product_sku_id' => 'nullable|string|max:255|unique:products,product_sku_id',
+            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'product_name' => 'required|string|max:255',
             'product_category' => 'required|string|max:255',
             'product_price' => 'required|numeric|min:0',
@@ -100,6 +102,60 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('success', 'Product added successfully!');
         
+    }
+
+    public function editProduct($id)
+    {
+        $product = Products::find($id);
+
+        if (!$product) {
+            return redirect()->route('dashboard.products')->with('error', 'Product not found.');
+        }
+
+        return view('dashboard.products.edit', compact('product'));
+    }
+
+    public function updateProduct(Request $request, $id) {
+        $product = Products::find($id);
+
+        if (!$product) {
+            return redirect()->route('dashboard.products')->with('error', 'Product not found.');
+        }
+
+        $validatedData = $request->validate([
+            'product_sku_id' => 'nullable|unique:products,product_sku_id|string|max:255',
+            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'product_name' => 'required|string|max:255',
+            'product_category' => 'required|string|max:255',
+            'product_price' => 'required|numeric|min:0',
+            'product_stock' => 'required|integer|min:0',
+        ]);
+
+        $product->update($validatedData);
+
+        if ($request->hasFile('product_image')) {
+            $imagePath = $request->file('product_image')->store('products', 'public');
+            $product->update(['product_image' => $imagePath]);
+        }
+
+        return redirect()->route('dashboard.products')->with('success', 'Product updated successfully!');
+    }
+
+    public function deleteProduct($id)
+    {
+        $product = Products::find($id);
+
+        if (!$product) {
+            return redirect()->route('dashboard.products')->with('error', 'Product not found.');
+        }
+
+        if ($product->product_image && \Storage::disk('public')->exists($product->product_image)) {
+            \Storage::disk('public')->delete($product->product_image);
+        }
+
+        $product->delete();
+
+        return redirect()->route('dashboard.products')->with('success', 'Product deleted successfully!');
     }
 
     public function users()

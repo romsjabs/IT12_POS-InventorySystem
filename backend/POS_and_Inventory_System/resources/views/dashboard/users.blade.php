@@ -1,8 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 
 @section('title', 'Users')
 
-@include('partials.dashboard-menu')
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-products.css') }}">
+@endsection
 
 @section('content')
 <div class="wrapper2">
