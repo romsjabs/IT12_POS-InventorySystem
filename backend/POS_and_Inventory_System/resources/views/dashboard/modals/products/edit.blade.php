@@ -16,8 +16,10 @@
                     <input type="hidden" id="edit-product-id" name="product_id">
 
                     <div class="product-name">
+
                         <label for="product-name">Product name</label>
                         <input type="text" name="product_name" id="edit-product-name" class="form-control" placeholder="Chocolate">
+                        
                     </div>
 
                     <div class="product-image">
@@ -43,17 +45,33 @@
                     </div>
 
                     <div class="product-id">
+
                         <label for="edit-product-id">Product SKU/ID</label>
                         <input type="text" name="product_sku_id" id="edit-product-sku-id" class="form-control" placeholder="4-800020-021112">
+
                     </div>
 
                     <div class="product-category">
-                        <label for="edit-product-category">Category</label>
-                        <select name="product_category" id="edit-product-category" class="form-select">
+
+                        <label for="product-category">Category</label>
+                        <select id="edit-product-category" name="product_category" class="form-select">
                             <option selected disabled>Select..</option>
-                            <option value="1">Category 1</option>
-                            <option value="2">Category 2</option>
+                            <option value="Iced Coffee">Iced Coffee</option>
+                            <option value="Hot Coffee">Hot Coffee</option>
+                            <option value="Food">Food</option>
+                            <option value="Pastries">Pastries</option>
+                            <option value="Beverages">Beverages</option>
+                            <option value="Snacks">Snacks</option>
+                            <option value="Desserts">Desserts</option>
+                            <option value="other">Other..</option>
                         </select>
+
+                    </div>
+
+                    <div class="product-category-other">
+
+                        <input type="text" name="product_category" id="edit-product-category-other" class="form-control" placeholder="Custom.." autocomplete="off">
+
                     </div>
 
                     <div class="product-wrapper">

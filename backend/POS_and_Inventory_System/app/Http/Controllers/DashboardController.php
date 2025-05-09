@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Checkouts;
+use App\Models\Checkout;
 use App\Models\EstablishmentDetails;
-use App\Models\Products;
+use App\Models\Product;
 use App\Models\Sales;
-use App\Models\Users;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -14,11 +14,11 @@ class DashboardController extends Controller
 {
     public function home()
     {
-        $salesCount = Checkouts::whereDate('created_at', Carbon::today())->sum('total_price');
-        $checkoutsCount = Checkouts::count();
-        $productsCount = Products::count();
-        $usersCount = Users::count();
-        $products = Products::all();
+        $salesCount = Checkout::whereDate('created_at', Carbon::today())->sum('total_price');
+        $checkoutsCount = Checkout::count();
+        $productsCount = Product::count();
+        $usersCount = User::count();
+        $products = Product::orderBy('created_at', 'desc')->take(5)->get();
 
         return view('dashboard.home', [
             'title' => 'Dashboard',
@@ -66,7 +66,7 @@ class DashboardController extends Controller
     {
         return view('dashboard.products', [
             'title' => 'Products',
-            'products' => Products::all()
+            'products' => Product::orderBy('created_at', 'desc')->get(),
         ]);
     }
 
@@ -91,7 +91,7 @@ class DashboardController extends Controller
             $imagePath = 'asets/images/product_image.png';
         }
 
-        $product = new Products();
+        $product = new Product();
         $product->product_sku_id = $validated['product_sku_id'];
         $product->product_image = $imagePath;
         $product->product_name = $validated['product_name'];
@@ -106,7 +106,7 @@ class DashboardController extends Controller
 
     public function editProduct($id)
     {
-        $product = Products::find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return redirect()->route('dashboard.products')->with('error', 'Product not found.');
@@ -116,14 +116,18 @@ class DashboardController extends Controller
     }
 
     public function updateProduct(Request $request, $id) {
-        $product = Products::find($id);
+        $product = Product::find($id);
+
+        $request->merge([
+            'product_price' => preg_replace('/[^\d.]/', '', $request->product_price),
+        ]);
 
         if (!$product) {
             return redirect()->route('dashboard.products')->with('error', 'Product not found.');
         }
 
         $validatedData = $request->validate([
-            'product_sku_id' => 'nullable|unique:products,product_sku_id|string|max:255',
+            'product_sku_id' => 'nullable|string|max:255|unique:products,product_sku_id,' . $id,
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'product_name' => 'required|string|max:255',
             'product_category' => 'required|string|max:255',
@@ -143,7 +147,7 @@ class DashboardController extends Controller
 
     public function deleteProduct($id)
     {
-        $product = Products::find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return redirect()->route('dashboard.products')->with('error', 'Product not found.');
@@ -158,6 +162,40 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.products')->with('success', 'Product deleted successfully!');
     }
 
+    public function viewCheckouts()
+    {
+        $checkouts = Checkout::with(['product', 'employee'])->latest()->get();
+
+        return view('dashboard.checkouts', compact('checkouts'));
+    }
+
+    public function storeCheckouts(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+
+        if ($product->product_stock < $request->quantity) {
+            return redirect()->back()->withErrors(['quanity' => 'Insufficient stock for this product.']);
+        }
+
+        $totalPrice = $product->product_price * $request->quantity;
+
+        Checkout::create([
+            'product_id' => $product->id,
+            'quantity' => $request->quantity,
+            'total_price' => $totalPrice,
+            'user_id' => auth()->id(),
+        ]);
+
+        $product->decrement('product_stock', $request->quantity);
+
+        return redirect()->route('dashboard.checkouts')->with('success', 'Checkout created successfully!');
+    }
+
     public function users()
     {
         return view('dashboard.users');
@@ -168,8 +206,4 @@ class DashboardController extends Controller
         return view('dashboard.sales');
     }
 
-    public function checkouts()
-    {
-        return view('dashboard.checkouts');
-    }
 }

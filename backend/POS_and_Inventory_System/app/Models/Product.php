@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Product extends Model
 {
     use HasFactory;
 
@@ -17,4 +17,9 @@ class Products extends Model
         'product_price',
         'product_stock',
     ];
+
+    public function checkouts()
+    {
+        return $this->hasMany(Checkout::class);
+    }
 }

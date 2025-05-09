@@ -36,11 +36,11 @@ Route::get('/dashboard/products/{id}/edit', [DashboardController::class, 'editPr
 Route::put('/dashboard/products/{id}/update', [DashboardController::class, 'updateProduct'])->name('dashboard.products.update');
 Route::delete('/dashboard/products/{id}/delete', [DashboardController::class, 'deleteProduct'])->name('dashboard.products.delete');
 
+Route::get('/dashboard/checkouts', [DashboardController::class, 'viewCheckouts'])->name('dashboard.checkouts');
+
 Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
 
 Route::get('/dashboard/sales', [DashboardController::class, 'sales'])->name('dashboard.sales');
-
-Route::get('/dashboard/checkouts', [DashboardController::class, 'checkouts'])->name('dashboard.checkouts');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -32,7 +32,7 @@
                 <div class="product-name">
 
                     <label for="product-name">Product name</label>
-                    <input type="text" id="add-product-name" name="product_name" class="form-control" placeholder="Chocolate" autocomplete="off" autocapitalize="words" autofocus>
+                    <input type="text" id="add-product-name" name="product_name" class="form-control" placeholder="Cappuccino Assassino" autocomplete="off" autocapitalize="words" autofocus>
 
                 </div>
 
@@ -105,7 +105,7 @@
 
                         <label for="product-stock">Stock</label>
                         
-                        <input type="text" name="product_stock" id="add-product-stock" class="form-control" placeholder="0">
+                        <input type="text" name="product_stock" id="add-product-stock" class="form-control" placeholder="0" autocomplete="off">
 
                     </div>
 

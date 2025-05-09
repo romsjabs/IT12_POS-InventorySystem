@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="card-body">
-                    <h1>0</h1>
+                    <h1>{{ number_format($productsCount) }}</h1>
                 </div>
 
             </div>
@@ -145,12 +145,12 @@
                         <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Product</th>
-                            <th scope="col">Qty</th>
+                            <th scope="col">Stock</th>
                             <th scope="col">Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @forelse ($products as $product)
                         <tr>
                             <td class="table-data">
                                 {{ $product->created_at->format('Y-m-d') }}
@@ -158,8 +158,20 @@
                             <td class="table-data">
                                 {{ $product->product_name }}
                             </td>
+                            <td class="table-data">
+                                x{{ $product->product_stock }}
+                            </td>
+                            <td class="table-data">
+                                ₱ {{ number_format($product->product_price, 2) }}
+                            </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center fw-bold">
+                                No products found
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
 

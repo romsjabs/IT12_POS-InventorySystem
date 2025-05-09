@@ -113,11 +113,13 @@ a {
     border-radius: 13px;
     background-color: #f1f1f1;
     width: 400px;
+    font-size: 12px;
 }
 
 .checkouts th, .checkouts td,
 .products th, .products td {
     background-color: #f1f1f1 !important;
+    font-size: 12px;
 }
 
 .checkouts th, .products th {

@@ -44,6 +44,20 @@
 
     </a>
 
+    <a href="{{ route('dashboard.checkouts') }}" class="d-flex gap-1" style="{{ request()->routeIs('dashboard.checkouts') ? 'background-color: #1b4c4c; border-radius: 8px;' : '' }}">
+        
+        <div class="menu-item">
+
+            <span class="icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </span>
+            
+            <span class="label">Checkouts</span>
+
+        </div>
+
+    </a>
+
     <a href="{{ route('dashboard.users') }}" class="d-flex gap-1" style="{{ request()->routeIs('dashboard.users') ? 'background-color: #1b4c4c; border-radius: 8px;' : '' }}">
 
         <div class="menu-item">
@@ -67,20 +81,6 @@
             </span>
             
             <span class="label">Sales</span>
-
-        </div>
-
-    </a>
-
-    <a href="{{ route('dashboard.checkouts') }}" class="d-flex gap-1" style="{{ request()->routeIs('dashboard.checkouts') ? 'background-color: #1b4c4c; border-radius: 8px;' : '' }}">
-        
-        <div class="menu-item">
-
-            <span class="icon">
-                <i class="fa-solid fa-cart-shopping"></i>
-            </span>
-            
-            <span class="label">Checkouts</span>
 
         </div>
 
