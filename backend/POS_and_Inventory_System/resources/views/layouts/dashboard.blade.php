@@ -10,11 +10,11 @@
     @yield('styles')
 </head>
 <body>
-    @include('partials.header')
+    @include('partials.dashboard.header')
 
     <main>
 
-        @include('partials.dashboard-menu')
+        @include('partials.dashboard.menu')
 
         @yield('content')
         
@@ -26,6 +26,8 @@
     <script src="{{ asset('assets/js/details-edit.js') }}"></script>
     <script src="{{ asset('assets/js/product.js')}}"></script>
 
-    @include('partials.footer')
+    @include('layouts.scripts')
+
+    @include('partials.dashboard.footer')
 
 </body>

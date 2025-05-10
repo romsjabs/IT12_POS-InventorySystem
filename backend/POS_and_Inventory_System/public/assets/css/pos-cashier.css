@@ -78,6 +78,11 @@ main {
     width: 300px;
 }
 
+.no-items {
+    text-align: center;
+    width: 100%;
+}
+
 #item-image {
     width: 80px;
 }

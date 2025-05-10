@@ -76,6 +76,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     width: 300px;
+    text-align: center;
 }
 
 #item-image {
