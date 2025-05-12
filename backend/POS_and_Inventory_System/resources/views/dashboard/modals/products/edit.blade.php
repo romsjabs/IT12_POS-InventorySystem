@@ -13,8 +13,6 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden" id="edit-product-id" name="product_id">
-
                     <div class="product-name">
 
                         <label for="product-name">Product name</label>
@@ -47,7 +45,7 @@
                     <div class="product-id">
 
                         <label for="edit-product-id">Product SKU/ID</label>
-                        <input type="text" name="product_sku_id" id="edit-product-sku-id" class="form-control" placeholder="4-800020-021112">
+                        <input type="text" name="product_id" id="edit-product-id" class="form-control" readonly>
 
                     </div>
 

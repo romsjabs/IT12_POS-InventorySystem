@@ -44,13 +44,13 @@
 
                 <thead>
                     <tr>
-                        <th class="table-row">Date/Time</th>
-                        <th class="table-row">Product</th>
-                        <th class="table-row">Quantity</th>
-                        <th class="table-row">Price</th>
-                        <th class="table-row">Total</th>
-                        <th class="table-row">Cashier</th>
-                        <th class="table-row d-none action-column" scope="col">Action</th>
+                        <th class="table-row" scope="col">Date/Time</th>
+                        <th class="table-row" scope="col">Transaction ID</th>
+                        <th class="table-row" scope="col">Product</th>
+                        <th class="table-row" scope="col">Quantity</th>
+                        <th class="table-row" scope="col">Total</th>
+                        <th class="table-row" scope="col">Cashier</th>
+                        <th class="table-row" scope="col">Action</th>
                     </tr>
                 </thead>
 
@@ -58,7 +58,7 @@
                     @forelse ($checkouts as $checkout)
                     <tr>
                         <td class="table-data">{{ $checkout->created_at->format('Y-m-d H:i') }}</td>
-                        <td class="table-data">{{ $checkout->product_qty }}</td>
+                        <td class="table-data">{{ $checkout->transaction_id }}</td>
                         <td class="table-data">
                             @php
                                 $product = $checkout->product;
@@ -71,13 +71,26 @@
                                 <img src="{{ $productImage }}" alt="Product" width="40" height="40" style="object-fit: cover;">
                             </span>
                             <span class="product-name">
-                                {{ $product->product_name }}
+                                {{ $product->product_name ?? 'N/A' }}
                             </span>
                         </td>
-                        <td class="table-data"></td>
-                        <td class="table-data"></td>
-                        <td class="table-data"></td>
-                        <td class="table-data"></td>
+                        <td class="table-data">x{{ $checkout->quantity }}</td>
+                        <td class="table-data">₱{{ number_format($checkout->total_price, 2) }}</td>
+                        <td class="table-data">{{ $checkout->employee->name ?? 'N/A' }}</td>
+                        <td class="table-data">
+
+                            <span class="view-btn">
+                                <button type="button" class="btn btn-primary btn-sm view-transaction" data-transaction="{{ $checkout->transaction_id }}" data-bs-toggle="modal" data-bs-target="#transactionModal">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>View</span>
+                                </button>
+                            </span>
+                            
+                            <span class="delete-btn">
+
+                            </span>
+
+                        </td>
                     </tr>
                     @empty
                     <tr>
@@ -99,6 +112,8 @@
     </div>
 
 </div>
+
+@include('dashboard.modals.checkouts.info')
 
 <script>
     // Check if there are validation errors and reopen the modal

@@ -19,6 +19,7 @@ class DashboardController extends Controller
         $productsCount = Product::count();
         $usersCount = User::count();
         $products = Product::orderBy('created_at', 'desc')->take(5)->get();
+        $recentCheckouts = Checkout::with(['product', 'employee'])->latest()->take(5)->get();
 
         return view('dashboard.home', [
             'title' => 'Dashboard',
@@ -26,7 +27,8 @@ class DashboardController extends Controller
             'checkoutsCount'=> $checkoutsCount,
             'productsCount'=> $productsCount,
             'usersCount'=> $usersCount,
-            'products' => $products
+            'products' => $products,
+            'recentCheckouts' => $recentCheckouts,
         ]);
     }
 
@@ -64,10 +66,30 @@ class DashboardController extends Controller
     
     public function viewProducts()
     {
+        $nextProductId = $this->generateProductId();
+
         return view('dashboard.products', [
             'title' => 'Products',
             'products' => Product::orderBy('created_at', 'desc')->get(),
+            'nextProductId' => $nextProductId,
         ]);
+    }
+
+    private function generateProductId()
+    {
+        $existingIds = Product::pluck('product_id')->filter()->map(function ($id) {
+            return (int) str_replace('PRODUCT-', '', $id);
+        })->sort()->values();
+
+        $next = 1;
+
+        foreach ($existingIds as $idNum) {
+            if ($idNum !== $next) {
+                break;
+            }
+            $next++;
+        }
+        return 'PRODUCT-' . str_pad($next, 4, '0',  STR_PAD_LEFT);
     }
 
     public function storeProduct(Request $request)
@@ -77,7 +99,7 @@ class DashboardController extends Controller
         ]);
         
         $validated = $request->validate([
-            'product_sku_id' => 'nullable|string|max:255|unique:products,product_sku_id',
+            //'product_id' => 'nullable|string|max:255|unique:products,product_id',
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'product_name' => 'required|string|max:255',
             'product_category' => 'required|string|max:255',
@@ -92,7 +114,7 @@ class DashboardController extends Controller
         }
 
         $product = new Product();
-        $product->product_sku_id = $validated['product_sku_id'];
+        $product->product_id = $this->generateProductId();
         $product->product_image = $imagePath;
         $product->product_name = $validated['product_name'];
         $product->product_category = $validated['product_category'];
@@ -127,13 +149,15 @@ class DashboardController extends Controller
         }
 
         $validatedData = $request->validate([
-            'product_sku_id' => 'nullable|string|max:255|unique:products,product_sku_id,' . $id,
+            'product_id' => 'nullable|string|max:255|unique:products,product_id,' . $id,
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'product_name' => 'required|string|max:255',
             'product_category' => 'required|string|max:255',
             'product_price' => 'required|numeric|min:0',
             'product_stock' => 'required|integer|min:0',
         ]);
+
+        unset($validatedData['product_id']);
 
         $product->update($validatedData);
 
@@ -164,7 +188,14 @@ class DashboardController extends Controller
 
     public function viewCheckouts()
     {
-        $checkouts = Checkout::with(['product', 'employee'])->latest()->get();
+        $checkouts = Checkout::with(['product', 'employee'])
+            ->selectRaw('MIN(id) as id')
+            ->groupBy('transaction_id')
+            ->latest('id')
+            ->get()
+            ->map(function ($row) {
+                return Checkout::with(['product', 'employee'])->find($row->id);
+            });
 
         return view('dashboard.checkouts', compact('checkouts'));
     }

@@ -103,7 +103,7 @@
                 <table class="table" id="orders-table">
                     <thead>
                         <tr>
-                            <th scope="col">Product SKU/ID</th>
+                            <th scope="col">Product ID</th>
                             <th scope="col">Product Name</th>
                             <th scope="col">Qty</th>
                             <th scope="col">Price</th>
@@ -131,7 +131,7 @@
 
                 </div>
 
-                <div class="screen">
+                <div class="screen" id="cash-screen">
                     ₱ 0.00
                 </div>
 
@@ -139,10 +139,10 @@
 
                     <div class="amount1">
 
-                        <div class="change">
+                        <div class="change" id="change-tab" style="display: none;">
     
                             <h4>Change:</h4>
-                            <h4>₱ 0.00</h4>
+                            <h4 id="change-value">₱ 0.00</h4>
         
                         </div>
     
@@ -187,31 +187,31 @@
 
                             <h1 class="numpad-key" onclick="addDigit('7')">7</h1>
                             <h1 class="numpad-key" onclick="addDigit('8')">8</h1>
-                            <h1 class="numpad-key">9</h1>
+                            <h1 class="numpad-key" onclick="addDigit('9')">9</h1>
 
                         </div>
 
                         <div class="numpad-wrapper2">
 
-                            <h1 class="numpad-key">4</h1>
-                            <h1 class="numpad-key">5</h1>
-                            <h1 class="numpad-key">6</h1>
+                            <h1 class="numpad-key" onclick="addDigit('4')">4</h1>
+                            <h1 class="numpad-key" onclick="addDigit('5')">5</h1>
+                            <h1 class="numpad-key" onclick="addDigit('6')">6</h1>
 
                         </div>
 
                         <div class="numpad-wrapper3">
 
-                            <h1 class="numpad-key">1</h1>
-                            <h1 class="numpad-key">2</h1>
-                            <h1 class="numpad-key">3</h1>
+                            <h1 class="numpad-key" onclick="addDigit('1')">1</h1>
+                            <h1 class="numpad-key" onclick="addDigit('2')">2</h1>
+                            <h1 class="numpad-key" onclick="addDigit('3')">3</h1>
 
                         </div>
 
                         <div class="numpad-wrapper4">
 
-                            <h1 class="numpad-key">0</h1>
-                            <h1 class="numpad-key clear">C</h1>
-                            <h1 class="numpad-key enter"><i class="fa-solid fa-right-to-bracket"></i></h1>
+                            <h1 class="numpad-key" onclick="addDigit('0')">0</h1>
+                            <h1 class="numpad-key clear" onclick="clearCashInput()">C</h1>
+                            <h1 class="numpad-key enter" onclick="startCheckout()"><i class="fa-solid fa-right-to-bracket"></i></h1>
 
                         </div>
 

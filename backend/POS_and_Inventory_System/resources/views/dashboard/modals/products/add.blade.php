@@ -64,8 +64,8 @@
 
                 <div class="product-id">
 
-                    <label for="product-id">Product SKU/ID</label>
-                    <input type="text" name="product_sku_id" id="add-product-sku-id" class="form-control" placeholder="4-800020-021112" autocomplete="off">
+                    <label for="product-id">Product ID</label>
+                    <input type="text" value="{{ $nextProductId }}" name="product_id" id="add-product-id" class="form-control" autocomplete="off" readonly>
                     
                 </div>
 

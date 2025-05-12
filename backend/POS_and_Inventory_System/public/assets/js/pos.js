@@ -1,39 +1,73 @@
-// real-time clock
+// --- Real-time clock ---
 function updateDateTime() {
     const now = new Date();
-
-    const day = now.toLocaleDateString('en-US', { weekday: 'short' }); // "Wed"
-    const date = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // "April 9, 2025"
-    const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }); // "12:00 PM"
+    const day = now.toLocaleDateString('en-US', { weekday: 'short' });
+    const date = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
     document.getElementById("current-date").textContent = `${date} (${day})`;
     document.getElementById("current-time").textContent = time;
-  }
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
 
-  setInterval(updateDateTime, 1000);
-  updateDateTime();
-
-// orders
+// --- Orders and Cash Input ---
 let orders = {};
+let cashInput = "";
 
-// Add product to orders table
+// --- UI Update Functions ---
+function updateCashScreen() {
+    const screen = document.getElementById('cash-screen');
+    if (screen) {
+        screen.textContent = cashInput
+            ? `₱ ${parseFloat(cashInput).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            : "₱ 0.00";
+    }
+    // Always hide change tab when editing cash
+    const changeTab = document.getElementById('change-tab');
+    if (changeTab) changeTab.style.display = "none";
+}
+
+// --- Numpad and Keyboard Input ---
+function addDigit(digit) {
+    if (cashInput.length >= 9) return;
+    if (digit === '.' && cashInput.includes('.')) return;
+    cashInput += digit;
+    updateCashScreen();
+}
+
+function clearCashInput() {
+    cashInput = "";
+    updateCashScreen();
+}
+
+document.addEventListener('keydown', function (e) {
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+    if (e.key >= '0' && e.key <= '9') {
+        addDigit(e.key);
+    } else if (e.key === '.' && !cashInput.includes('.')) {
+        addDigit('.');
+    } else if (e.key === 'Backspace') {
+        cashInput = cashInput.slice(0, -1);
+        updateCashScreen();
+    } else if (e.key === 'Enter') {
+        startCheckout();
+    }
+});
+
+// --- Orders Table Management ---
 function addToOrder(productId) {
     if (orders[productId]) {
         alert('Product already in the orders table.');
         return;
     }
 
-    // Fetch product details via AJAX
     fetch(`/pos/cashier/product/${productId}`)
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch product details.');
-            }
+            if (!response.ok) throw new Error('Failed to fetch product details.');
             return response.json();
         })
         .then(product => {
-            console.log('Fetched product:', product); // Debugging log
-
             if (product.stock <= 0) {
                 alert("Gi-ingna'g dili available. Samok!");
                 return;
@@ -41,7 +75,7 @@ function addToOrder(productId) {
 
             orders[productId] = {
                 id: product.id,
-                sku: product.sku,
+                product_id: product.product_id,
                 name: product.name,
                 price: product.price,
                 quantity: 1,
@@ -52,7 +86,7 @@ function addToOrder(productId) {
             const row = document.createElement('tr');
             row.setAttribute('data-id', product.id);
             row.innerHTML = `
-                <td>${product.sku}</td>
+                <td>${product.product_id}</td>
                 <td>${product.name}</td>
                 <td>
                     <div class="qty">
@@ -77,7 +111,6 @@ function addToOrder(productId) {
         });
 }
 
-// Update quantity
 function updateQuantity(productId, change) {
     const item = orders[productId];
     if (!item) return;
@@ -87,7 +120,6 @@ function updateQuantity(productId, change) {
         alert('You have reached the maximum stock limit.');
         return;
     }
-
     if (newQuantity < 1) {
         removeFromOrder(productId);
         return;
@@ -100,10 +132,84 @@ function updateQuantity(productId, change) {
     row.querySelector('td:nth-child(5)').textContent = `₱ ${(item.price * item.quantity).toFixed(2)}`;
 }
 
-// Remove product from orders table
 function removeFromOrder(productId) {
     delete orders[productId];
-
     const row = document.querySelector(`#orders-table tbody tr[data-id="${productId}"]`);
-    row.remove();
+    if (row) row.remove();
+}
+
+// --- Sync Orders to Backend Cart ---
+async function syncOrdersToCart() {
+    // Clear backend cart first to avoid duplicate/old items
+    await fetch('/pos/cashier/clear-cart', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    });
+
+    // Now sync current orders
+    for (const id in orders) {
+        const item = orders[id];
+        await fetch('/pos/cashier/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                id: item.id,
+                quantity: item.quantity
+            })
+        });
+    }
+}
+
+// --- Checkout Logic ---
+async function startCheckout() {
+    if (Object.keys(orders).length === 0) {
+        alert('Cart is empty.');
+        return;
+    }
+
+    let cash = parseFloat(cashInput);
+    if (isNaN(cash) || cash <= 0) {
+        alert("Please enter a valid cash amount.");
+        return;
+    }
+
+    // Sync frontend orders to backend cart before checkout
+    await syncOrdersToCart();
+
+    fetch('/pos/cashier/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ cash: cash })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show change tab and update value
+            const changeTab = document.getElementById('change-tab');
+            const changeElem = document.getElementById('change-value');
+            if (changeTab && changeElem) {
+                changeElem.textContent = `₱ ${parseFloat(data.change).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                changeTab.style.display = "block";
+            }
+            alert(data.success);
+            orders = {};
+            document.querySelector('#orders-table tbody').innerHTML = '';
+            cashInput = "";
+            updateCashScreen();
+        } else if (data.error) {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Checkout error:', error);
+        alert('Checkout failed.');
+    });
 }

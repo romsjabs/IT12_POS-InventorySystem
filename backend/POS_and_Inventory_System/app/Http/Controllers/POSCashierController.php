@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checkout;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -27,11 +28,40 @@ class POSCashierController extends Controller
 
         return response()->json([
             'id' => $product->id,
-            'sku' => $product->product_sku_id,
+            'product_id' => $product->product_id,
             'name' => $product->product_name,
             'price' => (float) $product->product_price,
             'stock' => $product->product_stock,
         ]);
+    }
+
+    private function generateTransactionId()
+    {
+        $last = Checkout::orderByDesc('transaction_id')->whereNotNull('transaction_id')->first();
+
+        if (!$last || !$last->transaction_id) {
+            return '0000-0000-0001';
+        }
+
+        $num = (int)str_replace('-',  '', $last->transaction_id);
+        $num++;
+
+        // Always pad to at least 12 digits
+        $new = str_pad($num, 12, '0', STR_PAD_LEFT);
+
+        // Split into groups: first group can be longer if number exceeds 12 digits
+        $groups = [];
+        $remaining = $new;
+        $firstGroupLen = strlen($new) - 8;
+        $groups[] = substr($remaining, 0, $firstGroupLen);
+        $remaining = substr($remaining, $firstGroupLen);
+        $groups[] = substr($remaining, 0, 4);
+        $groups[] = substr($remaining, 4, 4);
+
+        $transactionId = implode('-', array_filter($groups));
+
+        return $transactionId;
+
     }
 
     public function addToCart(Request $request)
@@ -116,6 +146,13 @@ class POSCashierController extends Controller
             'cart' => $cart,
         ]);
     }
+
+    public function clearCart()
+    {
+        Session::forget('cart');
+
+        return response()->json(['success' => true]);
+    }
     
     public function checkout(Request $request)
     {
@@ -126,9 +163,24 @@ class POSCashierController extends Controller
         }
 
         $total = 0;
+        $transactionId = $this->generateTransactionId();
 
-        foreach ($cart as $item) {
+        foreach ($cart as $productId => $item) {
             $total += $item['price'] * $item['quantity'];
+
+            Checkout::create([
+                'transaction_id' => $transactionId,
+                'product_id' => $productId,
+                'user_id' => auth()->id() ?? null,
+                'quantity' => $item['quantity'],
+                'total_price' => $item['price'] * $item['quantity'],
+            ]);
+
+            $product = Product::find($productId);
+
+            if ($product) {
+                $product->decrement('product_stock', $item['quantity']);
+            }
         }
 
         $cash = $request->cash;

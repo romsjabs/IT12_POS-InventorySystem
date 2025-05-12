@@ -10,9 +10,10 @@ class Checkout extends Model
     use HasFactory;
 
     protected $fillable = [
+        'transaction_id',
         'product_id',
         'user_id',
-        'product_qty',
+        'quantity',
         'total_price',
     ];
 

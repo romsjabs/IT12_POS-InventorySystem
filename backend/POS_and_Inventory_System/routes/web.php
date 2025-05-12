@@ -33,6 +33,7 @@ Route::post('/pos/cashier/add-to-cart', [POSCashierController::class, 'addToCart
 Route::post('/pos/cashier/update-cart/{productId}', [POSCashierController::class, 'updateCart'])->name('pos.updateCart');
 Route::delete('/pos/cashier/remove-from-cart/{productId}', [POSCashierController::class, 'removeFromCart'])->name('pos.removeFromCart');
 Route::post('/pos/cashier/checkout', [POSCashierController::class, 'checkout'])->name('pos.checkout');
+Route::post('/pos/cashier/clear-cart', [POSCashierController::class, 'clearCart'])->name('pos.clearCart');
 
 // dashboard routes
 Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard.home');

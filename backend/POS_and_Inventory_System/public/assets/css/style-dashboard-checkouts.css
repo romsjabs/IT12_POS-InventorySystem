@@ -101,7 +101,7 @@ a {
 
 /* crud */
 
-.fa-solid.fa-eye, .fa-solid.fa-magnifying-glass {
+.fa-solid.fa-magnifying-glass {
     color: #212529;
 }
 
@@ -148,7 +148,7 @@ a {
     font-size: 13.5px !important;
 }
 
-.btn-sm.edit-product, .btn-sm.delete-product {
+.btn-sm.view-transaction {
     padding: 2px 5px;
     font-size: 12px;
 }

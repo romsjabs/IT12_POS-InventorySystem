@@ -151,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const editForm = document.getElementById('editProductForm');
 
     const productNameInput = document.getElementById('edit-product-name');
-    const productSkuInput = document.getElementById('edit-product-sku-id');
     const productCategoryInput = document.getElementById('edit-product-category');
     const productPriceInput = document.getElementById('edit-product-price');
     const productStockInput = document.getElementById('edit-product-stock');
@@ -166,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.trackChanges = () => {
         const currentData = {
             name: productNameInput.value,
-            sku: productSkuInput.value,
             category: productCategoryInput.value,
             price: productPriceInput.value,
             stock: productStockInput.value,
@@ -183,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ✅ Attach listeners to track input changes
-    [productNameInput, productSkuInput, productCategoryInput, productPriceInput, productStockInput].forEach(input => {
+    [productNameInput, productCategoryInput, productPriceInput, productStockInput].forEach(input => {
         input.addEventListener('input', trackChanges);
     });
 
@@ -191,17 +189,16 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             // Get data attributes from the clicked button
             const productId = button.getAttribute('data-id');
+            const productCode = button.getAttribute('data-productid');
             const productName = button.getAttribute('data-name');
-            const productSku = button.getAttribute('data-sku');
             const productCategory = button.getAttribute('data-category');
             const productPrice = button.getAttribute('data-price');
             const productStock = button.getAttribute('data-stock');
             const productImage = button.getAttribute('data-image');
 
             // Populate the modal fields with the product data
-            productIdInput.value = productId;
+            productIdInput.value = productCode;
             productNameInput.value = productName;
-            productSkuInput.value = productSku;
             productCategoryInput.value = productCategory;
             productPriceInput.value = productPrice;
             productStockInput.value = productStock;
@@ -209,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // ✅ Store original data for comparison
             originalData = {
                 name: productName,
-                sku: productSku,
                 category: productCategory,
                 price: productPrice,
                 stock: productStock
