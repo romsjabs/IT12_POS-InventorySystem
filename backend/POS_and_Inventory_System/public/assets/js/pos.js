@@ -11,6 +11,79 @@ function updateDateTime() {
 setInterval(updateDateTime, 1000);
 updateDateTime();
 
+// --- Fetch Transaction ID ---
+function fetchTransactionRef() {
+    fetch('/pos/cashier/transaction-id')
+        .then(response => response.json())
+        .then(data => {
+            const refElem = document.getElementById('transaction-ref');
+            if (refElem) {
+                refElem.textContent = data.transaction_id; // Update the transaction reference
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching transaction ID:', error);
+        });
+}
+
+// Call fetchTransactionRef on page load
+document.addEventListener('DOMContentLoaded', fetchTransactionRef);
+
+// --- Calculate and Update Totals ---
+function updateTotals() {
+    let subtotal = 0;
+
+    // Calculate subtotal
+    for (const id in orders) {
+        const item = orders[id];
+        subtotal += item.price * item.quantity;
+    }
+
+    // Update subtotal
+    const subtotalElem = document.getElementById('subtotal-value');
+    if (subtotalElem) {
+        subtotalElem.textContent = `₱ ${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    // Apply discount (if any)
+    const discount = 0; // Add logic for discounts if needed
+    const discountElem = document.getElementById('discount-value');
+    if (discountElem) {
+        discountElem.textContent = `₱ ${discount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    // Calculate grand total
+    const grandTotal = subtotal - discount;
+    const grandTotalElem = document.getElementById('grand-total-value');
+    if (grandTotalElem) {
+        grandTotalElem.textContent = `₱ ${grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+}
+
+// --- Filter Products ---
+function filterProducts(categoryId) {
+    const allProducts = document.querySelectorAll('.items-wrapper .item');
+
+    allProducts.forEach(product => {
+        const productCategoryId = product.getAttribute('data-category-id');
+
+        // Show or hide products based on the selected category
+        if (categoryId === 'all' || productCategoryId === categoryId) {
+            product.style.display = 'block'; // Show the product
+        } else {
+            product.style.display = 'none'; // Hide the product
+        }
+    });
+
+    // Highlight the selected category button
+    const categoryButtons = document.querySelectorAll('.item-buttons .item-button');
+    categoryButtons.forEach(button => button.classList.remove('active'));
+    const activeButton = document.querySelector(`.item-button[data-category-id="${categoryId}"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
+}
+
 // --- Orders and Cash Input ---
 let orders = {};
 let cashInput = "";
@@ -69,7 +142,7 @@ function addToOrder(productId) {
         })
         .then(product => {
             if (product.stock <= 0) {
-                alert("Gi-ingna'g dili available. Samok!");
+                alert("Product is not available.");
                 return;
             }
 
@@ -104,6 +177,8 @@ function addToOrder(productId) {
                 </td>
             `;
             tableBody.appendChild(row);
+
+            updateTotals(); // Update totals after adding a product
         })
         .catch(error => {
             console.error('Error fetching product:', error);
@@ -130,12 +205,16 @@ function updateQuantity(productId, change) {
     const row = document.querySelector(`#orders-table tbody tr[data-id="${productId}"]`);
     row.querySelector('.qty span').textContent = item.quantity;
     row.querySelector('td:nth-child(5)').textContent = `₱ ${(item.price * item.quantity).toFixed(2)}`;
+
+    updateTotals(); // Update totals after changing quantity
 }
 
 function removeFromOrder(productId) {
     delete orders[productId];
     const row = document.querySelector(`#orders-table tbody tr[data-id="${productId}"]`);
     if (row) row.remove();
+
+    updateTotals(); // Update totals after removing a product
 }
 
 // --- Sync Orders to Backend Cart ---
@@ -165,8 +244,28 @@ async function syncOrdersToCart() {
     }
 }
 
-// --- Checkout Logic ---
+let transactionComplete = false; // Add this at the top of your file or before startCheckout
+
 async function startCheckout() {
+    if (transactionComplete) {
+        transactionComplete = false;
+        orders = {};
+        document.querySelector('#orders-table tbody').innerHTML = '';
+        cashInput = "";
+        updateCashScreen();
+        updateTotals();
+        // Restore grand total label and value
+        const grandLabel = document.getElementById('grand-label');
+        if (grandLabel) grandLabel.textContent = "Grand Total:";
+        const grandTotalElem = document.getElementById('grand-total-value');
+        if (grandTotalElem) grandTotalElem.textContent = "₱ 0.00";
+        // Hide the change tab
+        const changeTab = document.getElementById('change-tab');
+        if (changeTab) changeTab.style.display = "none";
+        fetchTransactionRef();
+        return;
+    }
+
     if (Object.keys(orders).length === 0) {
         alert('Cart is empty.');
         return;
@@ -178,7 +277,6 @@ async function startCheckout() {
         return;
     }
 
-    // Sync frontend orders to backend cart before checkout
     await syncOrdersToCart();
 
     fetch('/pos/cashier/checkout', {
@@ -192,18 +290,13 @@ async function startCheckout() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Show change tab and update value
-            const changeTab = document.getElementById('change-tab');
-            const changeElem = document.getElementById('change-value');
-            if (changeTab && changeElem) {
-                changeElem.textContent = `₱ ${parseFloat(data.change).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                changeTab.style.display = "block";
-            }
-            alert(data.success);
-            orders = {};
-            document.querySelector('#orders-table tbody').innerHTML = '';
-            cashInput = "";
-            updateCashScreen();
+            // Only swap the grand total label and value to show change
+            const grandLabel = document.getElementById('grand-label');
+            if (grandLabel) grandLabel.textContent = "Change:";
+            const grandTotalElem = document.getElementById('grand-total-value');
+            if (grandTotalElem) grandTotalElem.textContent = `₱ ${parseFloat(data.change).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            // Do NOT show the old change tab anymore
+            transactionComplete = true;
         } else if (data.error) {
             alert(data.error);
         }

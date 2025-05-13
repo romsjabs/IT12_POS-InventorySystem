@@ -17,26 +17,23 @@
 
         <div class="item-buttons">
 
-            <div class="item-button">
+            <div class="item-button" data-category-id="all" onclick="filterProducts('all')">
 
                 <span><i class="inventory-icon fa-solid fa-border-all"></i></span>
                 <span class="inventory-label">All</span>
 
             </div>
 
-            <div class="item-button">
+            @foreach ($categories as $category)
+            
+                <div class="item-button" data-category-id="{{ $category->product_category }}" onclick="filterProducts('{{ $category->product_category }}')">
 
-                <span><i class="fa-solid fa-layer-group"></i></span>
-                <span class="inventory-label">Category</span>
+                    <span><i class="inventory-icon fa-solid fa-bag-shopping"></i></span>
+                    <span class="inventory-label">{{ $category->product_category }}</span>
 
-            </div>
+                </div>
 
-            <div class="item-button">
-
-                <span><i class="fa-solid fa-layer-group"></i></span>
-                <span class="inventory-label">Category</span>
-
-            </div>
+            @endforeach
 
         </div>
 
@@ -60,14 +57,14 @@
 
                 @forelse ($products as $product)
 
-                    <div class="item" onclick="addToOrder({{ $product->id }})">
+                    <div class="item" data-category-id="{{ $product->product_category }}" onclick="addToOrder({{ $product->id }})">
 
                         <img id="item-image" 
                         src="{{ $product->product_image && Storage::disk('public')->exists($product->product_image) 
                             ? Storage::url($product->product_image) 
                             : asset('storage/defaults/product_image.png') 
                         }}"
-                        alt="Product Image">
+                        alt="Product Image" style="object-fit: cover;" width="100" height="80">
 
                         <span class="item-name">{{ $product->product_name }}</span>
 
@@ -127,7 +124,7 @@
                 <div class="reference">
 
                     <h4>Ref:</h4>
-                    <h4>0000000000</h4>
+                    <h4 id="transaction-ref">Loading...</h4>
 
                 </div>
 
@@ -137,7 +134,7 @@
 
                 <div class="amount">
 
-                    <div class="amount1">
+                   <!-- <div class="amount1">
 
                         <div class="change" id="change-tab" style="display: none;">
     
@@ -146,28 +143,28 @@
         
                         </div>
     
-                    </div>
+                    </div> -->
     
                     <div class="amount2">
     
                         <div class="subtotal">
     
                             <h4>Subtotal:</h4>
-                            <h4>₱ 0.00</h4>
+                            <h4 id="subtotal-value">₱ 0.00</h4>
     
                         </div>
     
                         <div class="discount">
     
                             <h4>Discount:</h4>
-                            <h4>₱ 0.00</h4>
+                            <h4 id="discount-value">₱ 0.00</h4>
     
                         </div>
     
                         <div class="grand-total">
     
-                            <h3>Grand Total:</h3>
-                            <h1>₱ 10,000.00</h1>
+                            <h3 id="grand-label">Grand Total:</h3>
+                            <h1 id="grand-total-value">₱ 0.00</h1>
     
                         </div>
     

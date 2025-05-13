@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="card-body">
-                    <h1>{{ number_format($salesCount) }}</h1>
+                    <h1>₱{{ number_format($salesCount) }}</h1>
                 </div>
 
             </div>

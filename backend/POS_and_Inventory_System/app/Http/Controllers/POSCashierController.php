@@ -11,13 +11,29 @@ class POSCashierController extends Controller
 {
     public function index()
     {
+        $categories = Product::select('product_category')
+            ->distinct()
+            ->get();
         $products = Product::all(); // Fetch all products from the database
 
         return view('pos.cashier', [
             'title' => 'POS Cashier View',
+            'categories' => $categories,
             'products' => $products,
         ]);
     }
+
+    public function getLatestTransactionId()
+    {
+        $lastTransaction = Checkout::orderByDesc('transaction_id')->first();
+
+        $transactionId = $lastTransaction ? $lastTransaction->transaction_id : '0000-0000-0001';
+
+        return response()->json([
+            'transaction_id' => $transactionId,
+        ]);
+    }
+    
     public function getProduct($id)
     {
         $product = Product::find($id);

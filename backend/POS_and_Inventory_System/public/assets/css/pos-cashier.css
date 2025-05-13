@@ -180,6 +180,7 @@ main {
     background-color: lightgray;
     padding: 10px;
     border-radius: 10px;
+    width: 250px;
 }
 
 .change, .subtotal, .discount {

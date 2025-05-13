@@ -28,6 +28,7 @@ Route::get('/', function () {
 
 // pos routes
 Route::get('/pos/cashier', [POSCashierController::class, 'index'])->name('pos.cashier');
+Route::get('/pos/cashier/transaction-id', [POSCashierController::class, 'getLatestTransactionId']);
 Route::get('/pos/cashier/product/{id}', [POSCashierController::class, 'getProduct'])->name('pos.getProduct');
 Route::post('/pos/cashier/add-to-cart', [POSCashierController::class, 'addToCart'])->name('pos.addToCart');
 Route::post('/pos/cashier/update-cart/{productId}', [POSCashierController::class, 'updateCart'])->name('pos.updateCart');
