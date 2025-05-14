@@ -17,7 +17,7 @@
 
         <div class="item-buttons">
 
-            <div class="item-button" data-category-id="all" onclick="filterProducts('all')">
+            <div class="item-button active" data-category-id="all" onclick="filterProducts('all')">
 
                 <span><i class="inventory-icon fa-solid fa-border-all"></i></span>
                 <span class="inventory-label">All</span>
@@ -59,6 +59,12 @@
 
                     <div class="item" data-category-id="{{ $product->product_category }}" onclick="addToOrder({{ $product->id }})">
 
+                        @if ($product->product_stock <= 0)
+                            <div class="item-stock-label">
+                                Not Available
+                            </div>
+                        @endif
+
                         <img id="item-image" 
                         src="{{ $product->product_image && Storage::disk('public')->exists($product->product_image) 
                             ? Storage::url($product->product_image) 
@@ -67,12 +73,6 @@
                         alt="Product Image" style="object-fit: cover;" width="100" height="80">
 
                         <span class="item-name">{{ $product->product_name }}</span>
-
-                        @if ($product->product_stock <= 0)
-                            <div class="stock-label">
-                                Not Available
-                            </div>
-                        @endif
 
                     </div>
 
@@ -221,4 +221,8 @@
         </div>
 
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{asset('assets/js/pos-cashier.js')}}"></script>
 @endsection

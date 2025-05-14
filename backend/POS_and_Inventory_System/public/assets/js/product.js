@@ -72,11 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         previewImage.src = e.target.result;
+                        previewImage.style.objectFit = 'cover';
                     };
                     reader.readAsDataURL(file);
                 }
 
-                trackChanges();
+                trackChanges && trackChanges();
             });
         }
 

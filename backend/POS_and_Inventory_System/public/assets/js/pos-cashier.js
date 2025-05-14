@@ -27,7 +27,10 @@ function fetchTransactionRef() {
 }
 
 // Call fetchTransactionRef on page load
-document.addEventListener('DOMContentLoaded', fetchTransactionRef);
+document.addEventListener('DOMContentLoaded', function () {
+    fetchTransactionRef();
+    restoreCartFromBackend();
+});
 
 // --- Calculate and Update Totals ---
 function updateTotals() {
@@ -61,20 +64,43 @@ function updateTotals() {
 }
 
 // --- Filter Products ---
-function filterProducts(categoryId) {
+// --- Live Search ---
+document.getElementById('products-search').addEventListener('input', function () {
+    applyFilters();
+});
+
+// Combine category and search filters
+let currentCategory = 'all';
+
+function applyFilters() {
+    const searchValue = document.getElementById('products-search').value.trim().toLowerCase();
     const allProducts = document.querySelectorAll('.items-wrapper .item');
 
     allProducts.forEach(product => {
         const productCategoryId = product.getAttribute('data-category-id');
+        const productName = product.querySelector('.item-name').textContent.toLowerCase();
 
-        // Show or hide products based on the selected category
-        if (categoryId === 'all' || productCategoryId === categoryId) {
-            product.style.display = 'block'; // Show the product
+        const matchesCategory = (currentCategory === 'all' || productCategoryId === currentCategory);
+        const matchesSearch = (productName.includes(searchValue));
+
+        if (matchesCategory && matchesSearch) {
+            product.style.display = 'flex';
         } else {
-            product.style.display = 'none'; // Hide the product
+            product.style.display = 'none';
         }
     });
 
+    // Show/hide "No items found" message
+    const visibleItems = Array.from(allProducts).some(product => product.style.display !== 'none');
+    const noItemsDiv = document.querySelector('.no-items');
+    if (noItemsDiv) {
+        noItemsDiv.style.display = visibleItems ? 'none' : 'block';
+    }
+}
+
+// Update filterProducts to use applyFilters and set currentCategory
+function filterProducts(categoryId) {
+    currentCategory = categoryId;
     // Highlight the selected category button
     const categoryButtons = document.querySelectorAll('.item-buttons .item-button');
     categoryButtons.forEach(button => button.classList.remove('active'));
@@ -82,6 +108,7 @@ function filterProducts(categoryId) {
     if (activeButton) {
         activeButton.classList.add('active');
     }
+    applyFilters();
 }
 
 // --- Orders and Cash Input ---
@@ -155,6 +182,8 @@ function addToOrder(productId) {
                 stock: product.stock
             };
 
+            syncSingleOrderToBackend(productId);
+
             const tableBody = document.querySelector('#orders-table tbody');
             const row = document.createElement('tr');
             row.setAttribute('data-id', product.id);
@@ -202,6 +231,8 @@ function updateQuantity(productId, change) {
 
     item.quantity = newQuantity;
 
+    syncSingleOrderToBackend(productId);
+
     const row = document.querySelector(`#orders-table tbody tr[data-id="${productId}"]`);
     row.querySelector('.qty span').textContent = item.quantity;
     row.querySelector('td:nth-child(5)').textContent = `₱ ${(item.price * item.quantity).toFixed(2)}`;
@@ -215,6 +246,13 @@ function removeFromOrder(productId) {
     if (row) row.remove();
 
     updateTotals(); // Update totals after removing a product
+
+    fetch(`/pos/cashier/remove-from-cart/${productId}`, { // <-- add this block
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    });
 }
 
 // --- Sync Orders to Backend Cart ---
@@ -297,6 +335,8 @@ async function startCheckout() {
             if (grandTotalElem) grandTotalElem.textContent = `₱ ${parseFloat(data.change).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             // Do NOT show the old change tab anymore
             transactionComplete = true;
+            cashInput = "";
+            updateCashScreen();
         } else if (data.error) {
             alert(data.error);
         }
@@ -305,4 +345,64 @@ async function startCheckout() {
         console.error('Checkout error:', error);
         alert('Checkout failed.');
     });
+}
+
+// sync order to customer view
+function syncSingleOrderToBackend(productId) {
+    const item = orders[productId];
+    if (!item) return;
+    fetch('/pos/cashier/add-to-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            id: item.id,
+            quantity: item.quantity
+        })
+    });
+}
+
+function restoreCartFromBackend() {
+    fetch('/pos/cashier/cart')
+        .then(response => response.json())
+        .then(cart => {
+            orders = {};
+            const tableBody = document.querySelector('#orders-table tbody');
+            tableBody.innerHTML = '';
+            cart.forEach(item => {
+                orders[item.id] = {
+                    id: item.id,
+                    product_id: item.product_id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    stock: item.stock ?? 9999
+                };
+                // Rebuild table row
+                const row = document.createElement('tr');
+                row.setAttribute('data-id', item.id);
+                row.innerHTML = `
+                    <td>${item.product_id}</td>
+                    <td>${item.name}</td>
+                    <td>
+                        <div class="qty">
+                            <button class="qty-btn btn btn-secondary btn-sm" onclick="updateQuantity('${item.id}', -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn btn btn-secondary btn-sm" onclick="updateQuantity('${item.id}', 1)">+</button>
+                        </div>
+                    </td>
+                    <td>₱ ${parseFloat(item.price).toFixed(2)}</td>
+                    <td>₱ ${(item.price * item.quantity).toFixed(2)}</td>
+                    <td>
+                        <button class="delete-btn btn btn-danger btn-sm" onclick="removeFromOrder('${item.id}')">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            updateTotals();
+        });
 }

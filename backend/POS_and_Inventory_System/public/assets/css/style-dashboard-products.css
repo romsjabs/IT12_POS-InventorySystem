@@ -120,6 +120,21 @@ a {
     gap: 10px;
 }
 
+.product-image-wrapper .preview-image {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.product-image-wrapper .preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .product-wrapper, .product-price, .product-stock, .stock-wrapper {
     display: flex;
     align-items: center;

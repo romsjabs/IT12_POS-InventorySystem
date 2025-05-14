@@ -14,7 +14,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Product SKU/ID</th>
+                        <th scope="col">Product ID</th>
                         <th scope="col">Product Name</th>
                         <th scope="col">Qty</th>
                         <th scope="col">Price</th>
@@ -22,132 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
-                    <tr>
-                        <td>4-800020-021112</td>
-                        <td>
-                            <span>
-                                <img src="assets/img/product_image.png" alt="Product Image" width="50">
-                            </span>
-                            <span>
-                                Product 1
-                            </span>
-                        </td>
-                        <td>x 1</td>
-                        <td>₱ 10.00</td>
-                        <td>₱ 10.00</td>
-                    </tr>
+                    
                 </tbody>
             </table>
 
@@ -155,44 +30,42 @@
 
         <div class="details-wrapper">
 
-            <div class="current-item">
-
+            <div class="current-item" id="customer-product-details">
+                
                 <div class="item-container1">
-    
+
                     <span>
-                        <h3>PRODUCT 1</h3>
-                        <h4>4-800020-021112</h4>
+                        <h3></h3>
+                        <h4></h4>
                     </span>
-    
                     <div class="item-price">
-    
                         <span class="sub-item-price">
                             <h3>₱</h3>
-                            <h3>10.00</h3>
+                            <h3>0.00</h3>
                             <h3>x</h3>
-                            <h3>1</h3>
+                            <h3>0</h3>
                         </span>
-        
                         <span class="total-item-price">
                             <h1>₱</h1>
-                            <h1>10.00</h1>
+                            <h1>0.00</h1>
                         </span>
-    
                     </div>
                     
                 </div>
     
                 <div class="item-container2">
-                    <img id="current-product-image" src="assets/img/product_image.png" alt="Product Image" width="150">
+                    <img id="current-product-image" src="/assets/img/product_image.png" alt="Product Image" width="150">
                 </div>
     
             </div>
     
-            <div class="welcome-user">
+            <div class="welcome-user" id="welcome-customer">
     
                 <h1>Welcome, Customer!</h1>
     
             </div>
+
+            <!--
 
             <div class="rewards-card">
 
@@ -206,6 +79,8 @@
                 </span>
                 
             </div>
+
+            !-->
 
         </div>
 
@@ -233,7 +108,9 @@
         
         <div class="checkout-details">
 
-            <div class="checkout1">
+            <div class="checkout1" id="checkout1">
+
+                <!--
 
                 <div class="subtotal">
 
@@ -274,9 +151,13 @@
     
                 </div>
 
+                !-->
+
             </div>
 
-            <div class="checkout2">
+            <div class="checkout2" id="checkout2" style="display: none;">
+
+                <!--
 
                 <div class="amount-given">
 
@@ -304,9 +185,15 @@
 
                 </div>
 
+                !-->
+
             </div>
 
         </div>
 
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{asset('assets/js/pos-customer.js')}}"></script>
 @endsection

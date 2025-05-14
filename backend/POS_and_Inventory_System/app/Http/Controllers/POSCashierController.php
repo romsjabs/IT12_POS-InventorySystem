@@ -23,6 +23,26 @@ class POSCashierController extends Controller
         ]);
     }
 
+    public function getCart()
+    {
+        $cart = Session::get('cart', []);
+        $result = [];
+
+        foreach ($cart as $productId => $item) {
+            $product = Product::find($productId);
+            if ($product) {
+                $result[] = [
+                    'id' => $product->id,
+                    'product_id' => $product->product_id,
+                    'name' => $product->product_name,
+                    'price'=> $product->product_price,
+                    'quantity'=> $item['quantity'],
+                    'stock' => $product->product_stock,
+                ];
+            }
+        }
+        return response()->json($result);
+    }
     public function getLatestTransactionId()
     {
         $lastTransaction = Checkout::orderByDesc('transaction_id')->first();
@@ -90,27 +110,22 @@ class POSCashierController extends Controller
 
         $cart = Session::get('cart', []);
 
-        if (isset($cart[$product->id])) {
-            if ($cart[$product->id]['quantity'] + $request->quantity > $product->product_stock) {
-                return response()->json(['error' => 'Not enough stock available'], 400);
-            }
-            $cart[$product->id]['quantity'] += $request->quantity;
-        } else {
-            if ($request->quantity > $product->product_stock) {
-                return response()->json(['error' => 'Insufficient stock'], 400);
-            }
-            $cart[$product->id] = [
-                'name' => $product->product_name,
-                'price' => $product->product_price,
-                'quantity' => $request->quantity,
-                'stock' => $product->product_stock,
-            ];
+        if ($request->quantity > $product->product_stock) {
+            return response()->json(['error' => 'Insufficient stock'], 400);
         }
 
+        $cart[$product->id] = [
+            'name' => $product->product_name,
+            'price' => $product->product_price,
+            'quantity' => $request->quantity,
+            'stock' => $product->product_stock,
+        ];
+
         Session::put('cart', $cart);
+        $this->updateCustomerCartSession();
 
         return response()->json([
-            'message' => 'Product added to cart',
+            'message' => 'Product added/updated in cart',
             'cart' => $cart,
         ]);
     }
@@ -138,6 +153,7 @@ class POSCashierController extends Controller
         $cart[$productId]['quantity'] = $newQuantity;
 
         Session::put('cart', $cart);
+        $this->updateCustomerCartSession();
 
         return response()->json([
             'message' => 'Cart updated successfully',
@@ -156,6 +172,7 @@ class POSCashierController extends Controller
         unset($cart[$productId]);
 
         Session::put('cart', $cart);
+        $this->updateCustomerCartSession();
 
         return response()->json([
             'message' => 'Product removed from cart',
@@ -166,6 +183,7 @@ class POSCashierController extends Controller
     public function clearCart()
     {
         Session::forget('cart');
+        Session::forget('customer_cart');
 
         return response()->json(['success' => true]);
     }
@@ -208,7 +226,34 @@ class POSCashierController extends Controller
         $change = $cash - $total;
 
         Session::forget('cart');
+        Session::forget('customer_cart');
 
         return response()->json(['success' => 'Checkout successful!', 'total' => $total, 'change' => $change]);
+    }
+
+    private function updateCustomerCartSession()
+    {
+        $cart = Session::get('cart', []);
+        $customerCart = [];
+
+        foreach ($cart as $productId => $item) {
+            $product = Product::find($productId);
+            if ($product) {
+                $image = $product->product_image && \Storage::disk('public')
+                    ->exists($product->product_image)
+                    ? \Storage::url($product->product_image)
+                    : asset('storage/defaults/product_image.png');
+                $customerCart[] = [
+                    'product_id' => $product->product_id,
+                    'name' => $product->product_name,
+                    'image' => $image,
+                    'quantity' => $item['quantity'],
+                    'price' => $product->product_price,
+                    'category' => $product->product_category,
+                ];
+            }
+        }
+
+        Session::put('customer_cart', $customerCart);
     }
 }

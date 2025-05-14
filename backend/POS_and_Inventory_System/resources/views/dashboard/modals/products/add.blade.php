@@ -46,7 +46,7 @@
 
                         <div class="preview-image">
 
-                            <img id="add-product-image-preview" src="{{ asset('assets/img/product_image.png') }}" alt="Product Image" class="img-fluid" width="100">
+                            <img id="add-product-image-preview" src="{{ asset('assets/img/product_image.png') }}" alt="Product Image" class="img-fluid" width="100" height="100">
 
                             <span class="enlarge-image">
                                 <i class="fa-solid fa-eye"></i>

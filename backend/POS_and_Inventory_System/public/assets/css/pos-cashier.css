@@ -69,6 +69,7 @@ main {
 
 .inventory-label {
     font-size: 12px;
+    text-align: center;
 }
 
 .items-wrapper {
@@ -85,6 +86,8 @@ main {
 
 #item-image {
     width: 80px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .item {
@@ -94,6 +97,20 @@ main {
     cursor: pointer;
     padding: 10px;
     border-radius: 10px;
+    width: 100px;
+    text-align: center;
+}
+
+.item-name {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+    white-space: normal;         /* Allow wrapping */
 }
 
 .item:hover {
@@ -109,10 +126,28 @@ main {
     padding: 10px;
 }
 
+.item-button.active {
+    background-color: #fff;
+    color: #212529;
+    border-radius: 10px;    
+    /* Add border or shadow if you want more emphasis */
+    border: 2px solid #009192;
+}
+
 .item-button:hover {
     background-color: white;
     color: #212529;
     border-radius: 10px;
+}
+
+.item-stock-label {
+    position: absolute;
+    font-size: 10px;
+    margin: 5px 0 0 0;
+    background-color: #C42122;
+    border-radius: 4.5px;
+    padding: 1px 3.5px 1px 3.5px;
+    color: white;
 }
 
 /* products table */

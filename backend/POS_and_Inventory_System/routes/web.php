@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POSCashierController;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\POSCustomerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,10 @@ Route::get('/', function () {
 */
 
 // pos routes
+
+// cashier side
 Route::get('/pos/cashier', [POSCashierController::class, 'index'])->name('pos.cashier');
+Route::get('/pos/cashier/cart', [POSCashierController::class, 'getCart']);
 Route::get('/pos/cashier/transaction-id', [POSCashierController::class, 'getLatestTransactionId']);
 Route::get('/pos/cashier/product/{id}', [POSCashierController::class, 'getProduct'])->name('pos.getProduct');
 Route::post('/pos/cashier/add-to-cart', [POSCashierController::class, 'addToCart'])->name('pos.addToCart');
@@ -35,6 +39,10 @@ Route::post('/pos/cashier/update-cart/{productId}', [POSCashierController::class
 Route::delete('/pos/cashier/remove-from-cart/{productId}', [POSCashierController::class, 'removeFromCart'])->name('pos.removeFromCart');
 Route::post('/pos/cashier/checkout', [POSCashierController::class, 'checkout'])->name('pos.checkout');
 Route::post('/pos/cashier/clear-cart', [POSCashierController::class, 'clearCart'])->name('pos.clearCart');
+
+// customer side
+Route::get('/pos/customer', [POSCustomerController::class, 'index'])->name('pos.customer');
+Route::get('/pos/customer/current-cart', [POSCustomerController::class, 'customerCurrentCart'])->name('pos.customer.currentCart'); 
 
 // dashboard routes
 Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard.home');
