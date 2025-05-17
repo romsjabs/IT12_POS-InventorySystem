@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    // home
     public function home()
     {
         $salesCount = Checkout::whereDate('created_at', Carbon::today())->sum('total_price');
@@ -32,6 +33,15 @@ class DashboardController extends Controller
         ]);
     }
 
+    // attendance
+    public function viewAttendance()
+    {
+        return view('dashboard.attendance', [
+            'title' => 'Attendance',
+        ]);
+    }
+
+    // details
     public function viewDetails()
     {
 
@@ -64,6 +74,7 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.details')->with('success', 'Details updated successfully');
     }
     
+    // products
     public function viewProducts()
     {
         $nextProductId = $this->generateProductId();
@@ -186,6 +197,7 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.products')->with('success', 'Product deleted successfully!');
     }
 
+    // checkouts
     public function viewCheckouts()
     {
         $checkouts = Checkout::with(['product', 'employee'])
@@ -227,11 +239,40 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.checkouts')->with('success', 'Checkout created successfully!');
     }
 
+    public function getTransactionDetails($transaction_id)
+    {
+        $checkouts = Checkout::with(['product', 'employee'])
+            ->where('transaction_id', $transaction_id)
+            ->get();
+
+        if ($checkouts->isEmpty()) {
+            return response()->json(['error' => 'Transaction not found'], 404);
+        }
+
+        $data = [
+            'transaction_id' => $transaction_id,
+            'created_at' => $checkouts->first()->created_at->format('Y-m-d H:i:s'),
+            'cashier' => $checkouts->first()->employee->name ?? 'N/A',
+            'items' => $checkouts->map(function ($checkout) {
+                return [
+                    'product_name' => $checkout->product->product_name,
+                    'quantity' => $checkout->quantity,
+                    'total_price' => $checkout->total_price,
+                ];
+            }),
+            'grand_total' => $checkouts->sum('total_price'),
+        ];
+
+        return response()->json($data);
+    }
+
+    // users
     public function users()
     {
         return view('dashboard.users');
     }
 
+    // sales
     public function sales()
     {
         return view('dashboard.sales');

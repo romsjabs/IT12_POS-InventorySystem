@@ -25,6 +25,7 @@
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('assets/js/details-edit.js') }}"></script>
     <script src="{{ asset('assets/js/product.js')}}"></script>
+    <script src="{{ asset('assets/js/checkout.js')}}"></script>
 
     @include('layouts.scripts')
 

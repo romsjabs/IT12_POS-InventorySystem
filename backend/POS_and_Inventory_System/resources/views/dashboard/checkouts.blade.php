@@ -56,7 +56,7 @@
 
                 <tbody id="checkouts-table-body">
                     @forelse ($checkouts as $checkout)
-                    <tr>
+                    <tr class="checkout-row">
                         <td class="table-data">{{ $checkout->created_at->format('Y-m-d H:i') }}</td>
                         <td class="table-data">{{ $checkout->transaction_id }}</td>
                         <td class="table-data">

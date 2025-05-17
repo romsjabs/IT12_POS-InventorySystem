@@ -45,21 +45,32 @@ Route::get('/pos/customer', [POSCustomerController::class, 'index'])->name('pos.
 Route::get('/pos/customer/current-cart', [POSCustomerController::class, 'customerCurrentCart'])->name('pos.customer.currentCart'); 
 
 // dashboard routes
+
+// home
 Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard.home');
 
+// attendance
+Route::get('/dashboard/attendance', [DashboardController::class, 'viewAttendance'])->name('dashboard.attendance');
+
+// details
 Route::get('/dashboard/details', [DashboardController::class, 'viewDetails'])->name('dashboard.details');
 Route::post('dashboard/details/store', [DashboardController::class, 'storeDetails'])->name('dashboard.details.store');
 
+// products
 Route::get('/dashboard/products', [DashboardController::class, 'viewProducts'])->name('dashboard.products');
 Route::post('/dashboard/products/store', [DashboardController::class, 'storeProduct'])->name('dashboard.products.store');
 Route::get('/dashboard/products/{id}/edit', [DashboardController::class, 'editProduct'])->name('dashboard.products.edit');
 Route::put('/dashboard/products/{id}/update', [DashboardController::class, 'updateProduct'])->name('dashboard.products.update');
 Route::delete('/dashboard/products/{id}/delete', [DashboardController::class, 'deleteProduct'])->name('dashboard.products.delete');
 
+// checkouts
 Route::get('/dashboard/checkouts', [DashboardController::class, 'viewCheckouts'])->name('dashboard.checkouts');
+Route::get('/dashboard/checkouts/transaction/{transaction_id}', [DashboardController::class, 'getTransactionDetails'])->name('dashboard.checkouts.transaction');
 
+// users
 Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
 
+// sales
 Route::get('/dashboard/sales', [DashboardController::class, 'sales'])->name('dashboard.sales');
 
 // auth routes
