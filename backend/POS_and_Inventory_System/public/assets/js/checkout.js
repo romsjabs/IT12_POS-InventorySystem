@@ -1,34 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('products-search');
-    const tableBody = document.getElementById('checkouts-table-body');
-    const noResults = document.getElementById('no-results');
-
-    searchInput.addEventListener('input', function () {
-        const filter = searchInput.value.toLowerCase();
-        let visibleRows = 0;
-
-        tableBody.querySelectorAll('tr.checkout-row').forEach(function (row) {
-            // Get all cells except the last one (action buttons)
-            const cells = Array.from(row.querySelectorAll('td')).slice(0, -1);
-            const rowText = cells.map(td => td.textContent.toLowerCase()).join(' ');
-            if (rowText.includes(filter)) {
-                row.style.display = '';
-                visibleRows++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        // Show/hide "No results" row
-        if (visibleRows === 0) {
-            noResults.style.display = '';
-        } else {
-            noResults.style.display = 'none';
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.view-transaction').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var transactionId = this.getAttribute('data-transaction');

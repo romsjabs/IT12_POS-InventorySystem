@@ -50,6 +50,65 @@
                 </span>
 
                 <input type="search" id="products-search" name="search" placeholder="Search..">
+                
+                <div class="keyboard">
+
+                    <div class="keyboard0">
+                        <span class="keyboard-key fw-bold" onclick="addDigit('1')">1</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('2')">2</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('3')">3</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('4')">4</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('5')">5</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('6')">6</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('7')">7</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('8')">8</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('9')">9</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('0')">0</span>
+                    </div>
+
+                    <div class="keyboard1">
+                        <span class="keyboard-key fw-bold" onclick="addDigit('q')">Q</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('w')">W</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('e')">E</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('r')">R</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('t')">T</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('y')">Y</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('u')">U</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('i')">I</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('o')">O</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('p')">P</span>
+                    </div>
+
+                    <div class="keyboard2">
+
+                        <span class="keyboard-key fw-bold" onclick="addDigit('a')">A</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('s')">S</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('d')">D</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('f')">F</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('g')">G</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('h')">H</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('j')">J</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('k')">K</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('l')">L</span>
+                    </div>
+                    
+                    <div class="keyboard3">
+                        <span class="keyboard-key fw-bold" onclick="addDigit('z')">Z</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('x')">X</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('c')">C</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('v')">V</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('b')">B</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('n')">N</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit('m')">M</span>
+                    </div>
+
+                    <div class="keyboard4">
+                        <span class="keyboard-key fw-bold" onclick="clearSearch()">C</span>
+                        <span class="keyboard-key fw-bold" onclick="addDigit(' ')">Space</span>
+                        <span class="keyboard-key fw-bold" onclick="searchProducts()">Search</span>
+                    </div>
+
+                </div>
 
             </div>
 
@@ -73,6 +132,12 @@
                         alt="Product Image" style="object-fit: cover;" width="100" height="80">
 
                         <span class="item-name">{{ $product->product_name }}</span>
+                        
+                        @if ($product->product_stock > 0)
+                        <div class="item-stock-count">
+                            x{{ $product->product_stock }}
+                        </div>
+                        @endif
 
                     </div>
 
@@ -130,6 +195,25 @@
 
                 <div class="screen" id="cash-screen">
                     ₱ 0.00
+                </div>
+
+                <div class="discount-option-wrapper">
+
+                    <div class="discount-radio form-check form-switch">
+                        <input type="checkbox" name="enable-discount" id="enable-discount" class="form-check-input">
+                        <label class="form-check-label" for="enable-discount">Discount</label>
+                    </div>
+
+                    <div class="discount-option d-none">
+
+                        <select name="discount-type" id="discount-type" class="form-select">
+                            <option selected disabled>Select..</option>
+                            <option value="PWD">PWD</option>
+                            <option value="Senior">Senior Citizen</option>
+                        </select>
+
+                    </div>
+
                 </div>
 
                 <div class="amount">

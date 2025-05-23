@@ -1,0 +1,17 @@
+/* © 2025 Romar Jabez */
+
+.menu-title {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.menu-title.pos {
+    padding: 15px 0px 0px 25px;
+    transform: translateY(10px);
+}
+
+.menu-title.dashboard {
+    padding: 5px 0px 0px 25px;
+    transform: translateY(5px);
+}

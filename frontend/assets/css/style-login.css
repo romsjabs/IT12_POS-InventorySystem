@@ -2,9 +2,32 @@
 
 .wrapper1 {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 130px;
-    transform: translateY(80px);
+    transform: translateY(150px);
+}
+
+.container1 {
+    position: absolute;
+    bottom: 400px;
+}
+
+.auth-error {
+    background-color: #036b6b;
+    border: 1px solid #054545;
+    border-radius: 5px;
+}
+
+.auth-error-wrapper {
+    display: flex;
+    color: white;
+    gap: 8px;
+    padding: 8px 13px 8px 13px;
+}
+
+.container2 {
+    display: flex;
+    gap: 180px;
 }
 
 body {
@@ -38,7 +61,7 @@ body {
 
 /* credentials */
 
-.container2 {
+.login-container {
     background-color: lightgray;
     padding: 30px;
     border-radius: 13px;

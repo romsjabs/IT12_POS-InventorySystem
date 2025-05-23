@@ -45,18 +45,18 @@ a {
     width: 860px;
 }
 
-.products {
+.attendance {
     margin: 30px 0 0 0;
 }
 
-.products-tab {
+.attendance-tab {
     display: flex;
     gap: 4px;
     justify-content: space-between;
     align-items: center;
 }
 
-#product-image {
+#user-image {
     border-radius: 10px;
 }
 
@@ -113,28 +113,41 @@ a {
     display: flex;
 }
 
-.product-image-wrapper {
+.attendance-image-wrapper {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.product-wrapper, .product-price, .product-stock, .stock-wrapper {
+.attendance-wrapper, .attendance-price, .attendance-stock, .stock-wrapper {
     display: flex;
     align-items: center;
 }
 
-.product-wrapper {
+.attendance-wrapper {
     gap: 5px;
 }
 
-.product-price, .product-stock {
+.attendance-price, .attendance-stock {
     gap: 10px;
 }
 
-#session-search {
+#attendance-search {
     border: 1px;
     background-color: transparent;
     border-bottom: 2px solid;
     outline: none;
+}
+
+.table-row, .table-data {
+    font-size: 13.5px !important;
+}
+
+.btn-sm.edit-user, .btn-sm.delete-user, .btn-sm.view-user {
+    padding: 2px 5px;
+    font-size: 12px;
+}
+
+.fa-solid.fa-eye.view {
+    color: white;
 }

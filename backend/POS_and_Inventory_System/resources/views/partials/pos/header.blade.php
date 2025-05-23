@@ -42,7 +42,7 @@
             <span>Sales</span>
         </span>
 
-        <span class="count">₱ 0.00</span>
+        <span class="count">₱ {{ number_format($salesCount ?? 0, 2) }}</span>
 
     </div>
 
@@ -53,22 +53,31 @@
             <span>Checkouts</span>
         </span>
 
-        <span class="count">0</span>
+        <span class="count">{{ number_format($checkoutsCount) }}</span>
 
     </div>
 
     <div class="user">
 
         <span><i class="fa-solid fa-circle-user"></i></span>
-        <span class="username">Ipsum, Lorem</span>
+        <span class="username">
+            @if(Auth::user()->record)
+                {{ Auth::user()->record->lastname }}, {{ Auth::user()->record->firstname }}
+            @else
+                <span style="color:red;">No user record!</span>
+            @endif
+        </span>
 
     </div>
 
     <div class="logout">
-
-        <span><i class="fa-solid fa-right-from-bracket"></i></span>
-        <span>Logout</span>
-
+        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="logout-btn">
+                <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                <span>Logout</span>
+            </button>
+        </form>
     </div>
 
 </header>

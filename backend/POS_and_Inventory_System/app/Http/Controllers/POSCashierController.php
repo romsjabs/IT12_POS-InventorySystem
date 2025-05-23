@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkout;
+use App\Models\CustomerScreenState;
+use App\Models\EstablishmentDetails;
 use App\Models\Product;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -11,15 +15,21 @@ class POSCashierController extends Controller
 {
     public function index()
     {
+        $salesCount = Checkout::whereDate('created_at', Carbon::today())->sum('total_price');
+        $checkoutsCount = Checkout::count();
         $categories = Product::select('product_category')
             ->distinct()
             ->get();
-        $products = Product::all(); // Fetch all products from the database
+        $products = Product::all();
+        $usersCount = User::count();
 
         return view('pos.cashier', [
             'title' => 'POS Cashier View',
             'categories' => $categories,
             'products' => $products,
+            'salesCount' => $salesCount,
+            'checkoutsCount' => $checkoutsCount,
+            'usersCount' => $usersCount,
         ]);
     }
 
@@ -190,17 +200,24 @@ class POSCashierController extends Controller
     
     public function checkout(Request $request)
     {
+        $cash = $request->input('cash');
         $cart = Session::get('cart', []);
 
         if (empty($cart)) {
             return response()->json(['error' => 'Cart is empty.'], 400);
         }
 
-        $total = 0;
+        $subtotal = 0;
         $transactionId = $this->generateTransactionId();
+        $items = [];
 
         foreach ($cart as $productId => $item) {
-            $total += $item['price'] * $item['quantity'];
+            $subtotal += $item['price'] * $item['quantity'];
+            $items[] = [
+                'name' => $item['name'],
+                'quantity' => $item['quantity'],
+                'total' => $item['price'] * $item['quantity'],
+            ];
 
             Checkout::create([
                 'transaction_id' => $transactionId,
@@ -211,13 +228,20 @@ class POSCashierController extends Controller
             ]);
 
             $product = Product::find($productId);
-
             if ($product) {
                 $product->decrement('product_stock', $item['quantity']);
             }
         }
 
-        $cash = $request->cash;
+        // --- DISCOUNT LOGIC ---
+        $discount = 0;
+        $discountEnabled = session('discount_enabled', false);
+        $discountType = session('discount_type', null);
+        if ($discountEnabled && in_array($discountType, ['PWD', 'Senior'])) {
+            $discount = $subtotal * 0.20;
+        }
+        $total = $subtotal - $discount;
+        // ----------------------
 
         if ($cash < $total) {
             return response()->json(['error' => 'Insufficient cash.'], 400);
@@ -225,10 +249,50 @@ class POSCashierController extends Controller
 
         $change = $cash - $total;
 
+        Session::put('customer_amount_given', $cash);
+        Session::put('customer_cart_total', $total);
+        Session::put('customer_show_change', true);
+
         Session::forget('cart');
         Session::forget('customer_cart');
 
-        return response()->json(['success' => 'Checkout successful!', 'total' => $total, 'change' => $change]);
+        CustomerScreenState::updateOrCreate(
+            ['screen_key' => 'main'],
+            [
+                'amount_given' => $cash,
+                'cart_total' => $total,
+                'show_change' => true,
+            ]
+        );
+
+        // --- Fetch establishment details ---
+        $est = EstablishmentDetails::first();
+
+        $updatedStocks = [];
+
+        foreach ($cart as $productId => $item) {
+            $product = Product::find($productId);
+            if ($product) {
+                $updatedStocks[$productId] = $product->product_stock;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'store_name' => $est->est_name ?? 'My Store',
+            'store_address' => $est->est_address ?? '123 Main St.',
+            'store_contact' => $est->est_contact_number ?? '',
+            'store_tin' => $est->est_tin_number ?? '',
+            'date' => now()->format('Y-m-d H:i:s'),
+            'transaction_id' => $transactionId,
+            'items' => $items,
+            'subtotal' => $subtotal,
+            'discount' => $discount,
+            'total' => $total,
+            'cash' => $cash,
+            'change' => $change,
+            'updatedStocks' => $updatedStocks,
+        ]);
     }
 
     private function updateCustomerCartSession()
@@ -256,4 +320,82 @@ class POSCashierController extends Controller
 
         Session::put('customer_cart', $customerCart);
     }
+
+    public function resetDiscount(Request $request)
+    {
+        Session::forget('discount_type');
+        Session::forget('discount_value');
+        
+        return response()->json([
+            'status' => 'reset',
+        ]);
+    }
+
+    public function setDiscount(Request $request)
+    {
+        $type = $request->input('type');
+        session(['discount_type' => $type]);
+
+        return response()->json([
+            'status' => 'set',
+            'type' => $type,
+        ]);
+    }
+
+    public function setDiscountState(Request $request)
+    {
+        session(['discount_enabled' => $request->input('enabled', false)]);
+        session(['discount_type' => $request->input('type', null)]);
+        return response()->json(['status' => 'ok']);
+    }
+
+    public function getDiscountState()
+    {
+        return response()->json([
+            'enabled' => session('discount_enabled', false),
+            'type' => session('discount_type', null)
+        ]);
+    }
+
+    // receipt printing
+    /*
+    public function showReceipt($transactionId)
+    {
+        $est = EstablishmentDetails::first();
+
+        $checkoutItems = Checkout::where('transaction_id', $transactionId)->get();
+        $items = [];
+        $subtotal = 0;
+
+        foreach ($checkoutItems as $item) {
+            $items[] = [
+                'name' => $item->product->product_name,
+                'quantity' => $item->quantity,
+                'total' => $item->total_price,
+            ];
+            $subtotal += $item->total_price;
+        }
+
+        $discount = 0;
+        $total = $subtotal - $discount;
+        $cash = $total;
+        $change = 0;
+
+        return view('pos.receipt',  [
+            'store_name' => $est->est_name ?? 'My Store',
+            'store_address' => $est->est_address ?? '123 Main St.',
+            'store_contact' => $est->est_contact_number ?? '',
+            'store_tin' => $est->est_tin_number ?? '',
+            'date' => now(),
+            'transaction_id' => $transactionId,
+            'items' => $items,
+            'subtotal' => $subtotal,
+            'discount' => $discount,
+            'total' => $total,
+            'cash' => $cash,
+            'change' => $change,
+        ]);
+    }
+    */
+    
 }

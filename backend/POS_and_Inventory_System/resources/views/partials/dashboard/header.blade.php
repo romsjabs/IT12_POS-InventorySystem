@@ -25,11 +25,18 @@
                 <div class="profile">
 
                     <div class="profile-icon">
-                        <img src="{{asset('assets/img/owner_image.jpg')}}" alt="User" width="30" height="30" class="rounded-circle">
+                        <img src="{{asset('assets/img/user_image.png')}}" alt="User" width="30" height="30" class="rounded-circle">
                     </div>
 
                     <div class="profile-name">
-                        <span>Romar Jabez</span>
+                        <span>
+                            @if(Auth::user()->record)
+                                {{ Auth::user()->record->lastname }},
+                                {{ Auth::user()->record->firstname }}
+                            @else
+                                <span style="color:red;">No user record found!</span>
+                            @endif
+                        </span>
                     </div>
 
                 </div>
@@ -43,7 +50,14 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Logout
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
                     </ul>
                     
                 </div>

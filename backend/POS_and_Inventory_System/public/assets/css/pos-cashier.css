@@ -38,6 +38,28 @@ main {
     justify-content: flex-end;
 }
 
+.logout {
+    cursor: pointer;
+    /* Remove color and button styles from here */
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font: inherit;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logout-btn:hover {
+    color: #0D3F3F;
+}
+
 /* inventory */
 
 .wrapper1 {
@@ -150,6 +172,17 @@ main {
     color: white;
 }
 
+.item-stock-count {
+    position: absolute;
+    transform: translateX(25px);
+    font-size: 10px;
+    margin: 5px 0 0 0;
+    background-color: #088c41;
+    border-radius: 4.5px;
+    padding: 1px 3.5px 1px 3.5px;
+    color: white;
+}
+
 /* products table */
 
 .products-list {
@@ -207,6 +240,17 @@ main {
     border-radius: 10px;
     display: flex;
     justify-content: flex-end;
+}
+
+.discount-option-wrapper {
+    display: flex;
+    gap: 5px;
+}
+
+.discount-radio {
+    display: flex;
+    gap: 5px;
+    align-items: center;
 }
 
 /* amounts */

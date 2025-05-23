@@ -3,7 +3,7 @@
 @section('title', 'Users')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-products.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-users.css') }}">
 @endsection
 
 @section('content')
@@ -11,48 +11,107 @@
 
     <h1>Users</h1>
 
-    <div class="products">
+    <div class="users">
 
-        <div class="products-tab">
+        <div class="users-tab">
 
-            <div class="product-search">
+            <div class="user-search">
 
                 <i class="fa-solid fa-magnifying-glass"></i>
 
-                <input type="search" id="session-search" name="search" placeholder="Search..">
+                <input type="search" id="users-search" name="search" placeholder="Search..">
 
             </div>
 
             <div class="buttons">
             
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">New</button>
-                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
-                <button type="button" class="btn btn-secondary btn-sm">Save</button>
-                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>New</span>
+                </button>
 
             </div>
 
         </div>
 
-        <div class="products-table">
-
-            <table class="table table-hover products">
+        <div class="users-table">
+            
+            <table class="table table-hover users" id="users-table">
 
                 <thead>
                     <tr>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Date registered</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Name</th>
+                        <th class="table-row" scope="col">User ID</th>
+                        <th class="table-row" scope="col">Date registered</th>
+                        <th class="table-row" scope="col">Username</th>
+                        <th class="table-row" scope="col">Name</th>
+                        <th class="table-row" scope="col">Role</th>
+                        <th class="table-row" scope="col">Action</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="users-table-body">
+                    @forelse ($users as $user)
                     <tr>
-                        <td>0001</td>
-                        <td>2025-01-01</td>
-                        <td>romsjabs</td>
-                        <td>Last, First M.I.</td>
+                        <td class="table-data">{{ $user->id }}</td>
+                        <td class="table-data">
+                            {{ $user->created_at
+                                ->timezone('Asia/Manila')
+                                ->format('Y-m-d h:i A') }}
+                        </td>
+                        <td class="table-data">
+                            {{ $user->username }}
+                        </td>
+                        <td class="table-data fw-bold">
+                            @if ($user->userRecord)
+                                {{ strtoupper($user->userRecord->lastname) }},
+                                @if ($user->userRecord->extension)
+                                    {{ strtoupper($user->userRecord->extension) }}
+                                @endif
+                                {{ strtoupper($user->userRecord->firstname) }}
+                                @if ($user->userRecord->middlename)
+                                    {{ strtoupper($user->userRecord->middlename[0]) }}.
+                                @endif
+                            @else
+                                undefined
+                            @endif
+                        </td>
+                        <td class="table-data">
+                            {{ ucfirst($user->role) }}
+                        </td>
+                        <td class="table-data">
+
+                            <span class="view-btn">
+
+                                <button type="button" class="btn btn-primary btn-sm view-user" data-bs-toggle="modal" data-bs-target="#userInfoModal"
+                                data-id="{{ $user->id }}"
+                                data-username="{{ $user->username }}"
+                                data-email="{{ $user->email }}"
+                                data-role="{{ $user->role }}"
+                                data-created="{{ $user->created_at->timezone('Asia/Manila')->format('Y-m-d h:i A') }}"
+                                
+                                @if ($user->userRecord)
+                                    data-firstname="{{ $user->userRecord->firstname }}"
+                                    data-middlename="{{ $user->userRecord->middlename }}"
+                                    data-lastname="{{ $user->userRecord->lastname }}"
+                                    data-extension="{{ $user->userRecord->extension }}"
+                                    data-gender="{{ $user->userRecord->gender }}"
+                                    data-birthdate="{{ $user->userRecord->birthdate }}"
+                                @endif>
+                                    <i class="fa-solid fa-eye view"></i>
+                                    <span>View</span>
+                                </button>
+                                
+                            </span>
+
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center fw-bold">No users found.</td>
+                    </tr>
+                    @endforelse
+                    <tr id="users-no-results" style="display: none;">
+                        <td colspan="6" class="text-center fw-bold">No results   found.</td>
                     </tr>
                 </tbody>
 
@@ -63,4 +122,7 @@
     </div>
 
 </div>
+
+@include('dashboard.modals.users.info')
+
 @endsection

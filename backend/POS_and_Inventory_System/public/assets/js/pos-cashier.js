@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
     restoreCartFromBackend();
 });
 
-// --- Calculate and Update Totals ---
 function updateTotals() {
     let subtotal = 0;
 
@@ -42,14 +41,24 @@ function updateTotals() {
         subtotal += item.price * item.quantity;
     }
 
+    // Discount logic
+    let discount = 0;
+    const discountCheckbox = document.getElementById('enable-discount');
+    const discountType = document.getElementById('discount-type');
+    if (
+        discountCheckbox && discountCheckbox.checked &&
+        discountType && (discountType.value === 'PWD' || discountType.value === 'Senior')
+    ) {
+        discount = subtotal * 0.20;
+    }
+
     // Update subtotal
     const subtotalElem = document.getElementById('subtotal-value');
     if (subtotalElem) {
         subtotalElem.textContent = `₱ ${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 
-    // Apply discount (if any)
-    const discount = 0; // Add logic for discounts if needed
+    // Update discount
     const discountElem = document.getElementById('discount-value');
     if (discountElem) {
         discountElem.textContent = `₱ ${discount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -301,6 +310,9 @@ async function startCheckout() {
         const changeTab = document.getElementById('change-tab');
         if (changeTab) changeTab.style.display = "none";
         fetchTransactionRef();
+
+        fetch('/pos/customer/reset', { method: 'POST' });
+        
         return;
     }
 
@@ -337,8 +349,44 @@ async function startCheckout() {
             transactionComplete = true;
             cashInput = "";
             updateCashScreen();
+            //showReceiptModal(data);
+
+        // Update product stock in the UI based on backend response
+        if (data.updatedStocks) {
+            Object.entries(data.updatedStocks).forEach(([productId, newStock]) => {
+                const productDiv = document.querySelector(`.item[onclick*="addToOrder(${productId})"]`);
+                if (productDiv) {
+                    const stockCountDiv = productDiv.querySelector('.item-stock-count');
+                    let notAvailableDiv = productDiv.querySelector('.item-stock-label');
+                    if (newStock <= 0) {
+                        if (stockCountDiv) stockCountDiv.style.display = 'none';
+                        if (!notAvailableDiv) {
+                            notAvailableDiv = document.createElement('div');
+                            notAvailableDiv.className = 'item-stock-label';
+                            notAvailableDiv.textContent = 'Not Available';
+                            productDiv.appendChild(notAvailableDiv);
+                        }
+                        productDiv.onclick = null;
+                        productDiv.classList.add('disabled');
+                    } else {
+                        if (stockCountDiv) {
+                            stockCountDiv.textContent = `x${newStock}`;
+                            stockCountDiv.style.display = '';
+                        }
+                        if (notAvailableDiv) notAvailableDiv.remove();
+                        productDiv.onclick = function() { addToOrder(Number(productId)); };
+                        productDiv.classList.remove('disabled');
+                    }
+                }
+            });
+        }
+        
         } else if (data.error) {
             alert(data.error);
+            if (data.error === 'Insufficient cash.') {
+                cashInput = "";
+                updateCashScreen();
+            }
         }
     })
     .catch(error => {
@@ -406,3 +454,63 @@ function restoreCartFromBackend() {
             updateTotals();
         });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetchTransactionRef();
+    restoreCartFromBackend();
+
+    const discountCheckbox = document.getElementById('enable-discount');
+    const discountOption = document.querySelector('.discount-option');
+    const discountType = document.getElementById('discount-type');
+
+    // 1. Load state from backend on page load
+    fetch('/pos/cashier/discount-state')
+        .then(response => response.json())
+        .then(data => {
+            discountCheckbox.checked = !!data.enabled;
+            if (data.enabled) {
+                discountOption.classList.remove('d-none');
+                if (data.type) discountType.value = data.type;
+            } else {
+                discountOption.classList.add('d-none');
+                discountType.selectedIndex = 0;
+            }
+            updateTotals();
+        });
+
+    // 2. Save state when checkbox changes
+    discountCheckbox.addEventListener('change', function () {
+        const enabled = discountCheckbox.checked;
+        const type = enabled ? discountType.value : null;
+        if (enabled) {
+            discountOption.classList.remove('d-none');
+        } else {
+            discountOption.classList.add('d-none');
+            discountType.selectedIndex = 0;
+        }
+        fetch('/pos/cashier/discount-state', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ enabled, type })
+        });
+        updateTotals();
+    });
+
+    // 3. Save state when select changes
+    discountType.addEventListener('change', function () {
+        if (discountCheckbox.checked) {
+            fetch('/pos/cashier/discount-state', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ enabled: true, type: discountType.value })
+            });
+            updateTotals();
+        }
+    });
+});

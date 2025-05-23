@@ -2,8 +2,28 @@
 
 @section('title', 'Register')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/style-register.css') }}">
+@endsection
+
 @section('content')
 <div class="wrapper1">
+
+    @if($errors->any())
+        <div class="auth-error">
+        
+            <div class="auth-error-wrapper">
+
+                <div class="auth-error-message">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </div>
+                
+            </div>
+
+        </div>
+    @endif
 
     <div class="registration">
         
@@ -45,7 +65,7 @@
                     <div class="extension form-floating col-md-6">
 
                         <select name="extension" id="extension" class="form-select" placeholder="Extension">
-                            <option selected value="N/A">N/A</option>
+                            <option value="" selected>N/A</option>
                             <option value="Jr.">Jr.</option>
                             <option value="Sr.">Sr.</option>
                             <option value="I">I</option>
@@ -107,7 +127,7 @@
                     </div>
 
                     <div class="confirm-password form-floating mb-1 col-md-6">
-                        <input type="password" name="confirm_password" id="confirm-password" class="form-control" placeholder="Confirm password">
+                        <input type="password" name="password_confirmation" id="confirm-password" class="form-control" placeholder="Confirm password">
                         <label for="confirm-password">Confirm password</label>
                     </div>
 

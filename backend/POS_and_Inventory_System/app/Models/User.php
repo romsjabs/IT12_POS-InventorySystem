@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
     ];
@@ -42,4 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function record()
+    {
+        return $this->hasOne(UserRecord::class);
+    }
+
+    public function userRecord()
+    {
+        return $this->hasOne(UserRecord::class);
+    }
 }

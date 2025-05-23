@@ -29,7 +29,7 @@ main {
 
 /* pos current status */
 
-.current-item, .welcome-user, .rewards-card {
+.current-item, #customer-product-details, .welcome-user, .rewards-card {
     margin: 20px 0 0 0;
     background-color: lightgray;
     padding: 25px;
@@ -39,9 +39,21 @@ main {
     height: 240px;
 }
 
-.current-item, .welcome-user {
+.current-item, #customer-product-details, .welcome-user {
     justify-content: space-between;
     align-items: center;
+}
+
+#current-product-image1, #current-product-image2 {
+    object-fit: cover;
+}
+
+#current-product-image1 {
+    border-radius: 8px;
+}
+
+#current-product-image2 {
+    border-radius: 15px;
 }
 
 .rewards-card {

@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="card-body">
-                    <h1>0</h1>
+                    <h1>{{ number_format($checkoutsCount) }}</h1>
                 </div>
 
             </div>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="card-body">
-                    <h1>0</h1>
+                    <h1>{{ number_format($usersCount) }}</h1>
                 </div>
 
             </div>
@@ -110,18 +110,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2025-01-01</td>
-                            <td>PHP 500</td>
-                            <td>x10</td>
-                            <td>Romar Jabez</td>
-                        </tr>
-                        <tr>
-                            <td>2025-01-01</td>
-                            <td>PHP 500</td>
-                            <td>x10</td>
-                            <td>Romar Jabez</td>
-                        </tr>
+                        @forelse ($recentCheckouts as $checkout)
+                            <tr>
+                                <td>{{ $checkout->created_at->format('Y-m-d') }}</td>
+                                <td>₱{{ number_format($checkout->total_price, 2) }}</td>
+                                <td>x{{ $checkout->quantity }}</td>
+                                <td>
+                                    @php $userRecord = $checkout->user->userRecord ?? null; @endphp
+                                    {{ $userRecord ? strtoupper($userRecord->lastname) . ', ' . strtoupper($userRecord->firstname) : 'N/A' }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center fw-bold">No checkouts found</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
 
@@ -187,4 +190,18 @@
     </div>
 
 </div>
+@endsection
+
+@section('chartscripts')
+<script>
+    const dailyLabels = @json($dailyLabels);
+    const dailySales = @json($dailySales);
+    const monthlyLabels = @json($monthlyLabels);
+    const monthlySales = @json($monthlySales);
+
+    console.log(dailyLabels);
+    console.log(dailySales);
+    console.log(monthlyLabels);
+    console.log(monthlySales);
+</script>
 @endsection

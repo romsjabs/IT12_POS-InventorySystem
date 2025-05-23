@@ -26,7 +26,7 @@
 
                 <i class="fa-solid fa-magnifying-glass"></i>
 
-                <input type="search" id="products-search" name="search" placeholder="Search..">
+                <input type="search" id="checkouts-search" name="search" placeholder="Search..">
 
             </div>
 
@@ -57,7 +57,9 @@
                 <tbody id="checkouts-table-body">
                     @forelse ($checkouts as $checkout)
                     <tr class="checkout-row">
-                        <td class="table-data">{{ $checkout->created_at->format('Y-m-d H:i') }}</td>
+                        <td class="table-data">{{ $checkout->created_at
+                        ->timezone('Asia/Manila')
+                        ->format('Y-m-d h:i A') }}</td>
                         <td class="table-data">{{ $checkout->transaction_id }}</td>
                         <td class="table-data">
                             @php
@@ -76,7 +78,10 @@
                         </td>
                         <td class="table-data">x{{ $checkout->quantity }}</td>
                         <td class="table-data">₱{{ number_format($checkout->total_price, 2) }}</td>
-                        <td class="table-data">{{ $checkout->employee->name ?? 'N/A' }}</td>
+                        <td class="table-data">
+                            @php $userRecord = $checkout->employee->userRecord ?? null; @endphp
+                            {{ $userRecord ? strtoupper($userRecord->lastname) . ', ' . strtoupper($userRecord->firstname) : 'N/A' }}
+                        </td>
                         <td class="table-data">
 
                             <span class="view-btn">
@@ -97,11 +102,8 @@
                         <td colspan="7" class="text-center fw-bold">No checkouts found.</td>
                     </tr>
                     @endforelse
-                </tbody>
-
-                <tbody id="no-results" style="display: none;">
-                    <tr>
-                        <td colspan="9" class="text-center fw-bold">No results found.</td>
+                    <tr id="checkouts-no-results" style="display: none;">
+                        <td colspan="7" class="text-center fw-bold">No results found.</td>
                     </tr>
                 </tbody>
 

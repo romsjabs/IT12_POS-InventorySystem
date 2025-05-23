@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style-signed-in.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style-dashboard-menu.css') }}">
     @yield('styles')
 </head>
 <body>
@@ -26,6 +27,11 @@
     <script src="{{ asset('assets/js/details-edit.js') }}"></script>
     <script src="{{ asset('assets/js/product.js')}}"></script>
     <script src="{{ asset('assets/js/checkout.js')}}"></script>
+    <script src="{{ asset('assets/js/users.js')}}"></script>
+
+    @yield('chartscripts')
+    
+    @yield('scripts')
 
     @include('layouts.scripts')
 

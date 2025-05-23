@@ -32,10 +32,19 @@
 
             <div class="buttons">
             
-                <button id="addButton" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">New</button>
+                <button id="addButton" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">
+                    <i class="fa-solid fa-square-plus"></i>
+                    <span>New</span>
+                </button>
                 @if ($products->count() > 0)
-                    <button id="editButton" type="button" class="btn btn-secondary btn-sm">Edit</button>
-                    <button id="cancelButton" type="button" class="btn btn-secondary btn-sm d-none">Cancel</button>
+                    <button id="editButton" type="button" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Edit</span>
+                    </button>
+                    <button id="cancelButton" type="button" class="btn btn-secondary btn-sm d-none">
+                        <i class="fa-solid fa-rectangle-xmark"></i>
+                        <span>Cancel</span>
+                    </button>
                 @endif
 
             </div>
@@ -72,7 +81,7 @@
                                     : asset('storage/defaults/product_image.png');
                             @endphp
                             <span class="product-image">
-                                <img src="{{ $productImage }}" alt="Product" width="40" height="40" style="object-fit: cover;">
+                                <img src="{{ $productImage }}" alt="Product" width="40" height="40" style="object-fit: cover; border-radius: 5px;">
                             </span>
                             <span class="product-name">
                                 {{ $product->product_name }}
@@ -117,7 +126,8 @@
                             <div class="action-buttons">
                                 <!-- Edit Product Button -->
                                 <button type="button" class="btn btn-primary btn-sm edit-product" data-id="{{ $product->id }}" data-name="{{ $product->product_name }}" data-productid="{{ $product->product_id }}" data-category="{{ $product->product_category }}" data-price="{{ $product->product_price }}" data-stock="{{ $product->product_stock }}" data-image="{{ $product->product_image && Storage::disk('public')->exists($product->product_image) ? Storage::url($product->product_image) : asset('storage/defaults/product_image.png') }}" data-bs-toggle="modal" data-bs-target="#edit-modal">
-                                    Edit
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Edit</span>
                                 </button>
                                 <!-- Delete Product Button -->
                                 <button 
@@ -127,7 +137,8 @@
                                     data-name="{{ $product->product_name }}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#deleteModal">
-                                    Delete
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Delete</span>
                                 </button>
                             </div>
                         </td>
@@ -136,13 +147,9 @@
                             <td colspan="7" class="text-center fw-bold">No products found</td>
                         </tr>
                         @endforelse
-
-                    </tr>
-                </tbody>
-
-                <tbody id="no-results" style="display: none;">
-                    <tr>
-                        <td colspan="9" class="text-center fw-bold">No results found.</td>
+                        <tr id="products-no-results" style="display: none;">
+                            <td colspan="8" class="text-center fw-bold">No results found.</td>
+                        </tr>
                     </tr>
                 </tbody>
 

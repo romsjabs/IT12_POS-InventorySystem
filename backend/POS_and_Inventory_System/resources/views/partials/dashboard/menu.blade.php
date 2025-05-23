@@ -1,5 +1,41 @@
 <div class="wrapper1">
 
+<div class="menu-title pos">POINT-OF-SALE</div>
+
+<div class="menu">
+
+    <a href="{{ route('pos.cashier') }}" class="d-flex gap-1" target="_blank" rel="noopener noreferrer">
+
+        <div class="menu-item">
+
+            <span class="icon">
+                <i class="fa-solid fa-cash-register"></i>
+            </span>
+            
+            <span class="label">Cashier View</span>
+
+        </div>
+
+    </a>
+
+    <a href="{{ route('pos.customer') }}" class="d-flex gap-1" target="_blank" rel="noopener noreferrer">
+
+        <div class="menu-item">
+
+            <span class="icon">
+                <i class="fa-solid fa-display"></i>
+            </span>
+            
+            <span class="label">Customer View</span>
+
+        </div>
+
+    </a>
+
+</div>
+
+<div class="menu-title dashboard">DASHBOARD</div>
+
 <div class="menu">
 
     <a href="{{ route('dashboard.home') }}" class="d-flex gap-1" style="{{ request()->routeIs('dashboard.home') ? 'background-color: #1b4c4c; border-radius: 8px;' : '' }}">

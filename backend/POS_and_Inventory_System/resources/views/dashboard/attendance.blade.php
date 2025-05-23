@@ -11,49 +11,59 @@
 
     <h1>Attendance</h1>
 
-    <div class="products">
+    <div class="attendance">
 
-        <div class="products-tab">
+        <div class="attendance-tab">
 
-            <div class="product-search">
+            <div class="attendance-search">
 
                 <i class="fa-solid fa-magnifying-glass"></i>
 
-                <input type="search" id="session-search" name="search" placeholder="Search..">
+                <input type="search" id="attendance-search" name="search" placeholder="Search..">
 
             </div>
 
             <div class="buttons">
             
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">New</button>
-                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
-                <button type="button" class="btn btn-secondary btn-sm">Save</button>
-                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-modal">
+                    New
+                </button>
+                @if ($attendance->count() > 0)
+                    <button type="button" class="btn btn-secondary btn-sm">Edit</button>
+                    <button type="button" class="btn btn-secondary btn-sm">Cancel</button>
+                @endif
 
             </div>
 
         </div>
 
-        <div class="products-table">
+        <div class="attendance-table">
 
-            <table class="table table-hover products">
+            <table class="table table-hover attendance" id="attendance-table">
 
                 <thead>
                     <tr>
                         <th scope="col">User ID</th>
-                        <th scope="col">Date registered</th>
-                        <th scope="col">Username</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Time-in</th>
+                        <th scope="col">Time-out</th>
+                        <th scope="col">Estimated rate</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="attendance-table-body">
+                    @foreach ($attendance as $record)
                     <tr>
-                        <td>0001</td>
-                        <td>2025-01-01</td>
-                        <td>romsjabs</td>
-                        <td>Last, First M.I.</td>
+                        <td class="table-data"></td>
+                        <td class="table-data"></td>
+                        <td class="table-data"></td>
+                        <td class="table-data"></td>
+                        <td class="table-data"></td>
+                        <td class="table-data"></td>
+                        <td class="table-data"></td>
                     </tr>
+                    @endforeach
                 </tbody>
 
             </table>

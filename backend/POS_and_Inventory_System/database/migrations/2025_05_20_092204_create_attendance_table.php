@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cashiers', function (Blueprint $table) {
+        Schema::create('attendance', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('shift_start')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->timestamp('shift_start');
             $table->timestamp('shift_end')->nullable();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cashiers');
+        Schema::dropIfExists('attendance');
     }
 };

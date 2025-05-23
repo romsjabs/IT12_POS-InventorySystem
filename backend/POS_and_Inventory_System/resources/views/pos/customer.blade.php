@@ -30,32 +30,7 @@
 
         <div class="details-wrapper">
 
-            <div class="current-item" id="customer-product-details">
-                
-                <div class="item-container1">
-
-                    <span>
-                        <h3></h3>
-                        <h4></h4>
-                    </span>
-                    <div class="item-price">
-                        <span class="sub-item-price">
-                            <h3>₱</h3>
-                            <h3>0.00</h3>
-                            <h3>x</h3>
-                            <h3>0</h3>
-                        </span>
-                        <span class="total-item-price">
-                            <h1>₱</h1>
-                            <h1>0.00</h1>
-                        </span>
-                    </div>
-                    
-                </div>
-    
-                <div class="item-container2">
-                    <img id="current-product-image" src="/assets/img/product_image.png" alt="Product Image" width="150">
-                </div>
+            <div class="current-item d-none" id="customer-product-details">
     
             </div>
     
@@ -108,84 +83,11 @@
         
         <div class="checkout-details">
 
-            <div class="checkout1" id="checkout1">
-
-                <!--
-
-                <div class="subtotal">
-
-                    <span>
-                        <h4>Subtotal:</h4>
-                    </span>
-    
-                    <span class="amount">
-                        <h4>₱</h4>
-                        <h4>10.00</h4>
-                    </span>
-    
-                </div>
-    
-                <div class="discount">
-    
-                    <span>
-                        <h4>Discount:</h4>
-                    </span>
-    
-                    <span class="amount">
-                        <h4>₱</h4>
-                        <h4>0.00</h4>
-                    </span>
-                    
-                </div>
-    
-                <div class="total">
-    
-                    <span>
-                        <h3>Total:</h3>
-                    </span>
-    
-                    <span class="amount">
-                        <h1>₱</h1>
-                        <h1>10.00</h1>
-                    </span>
-    
-                </div>
-
-                !-->
+            <div class="checkout1 d-none" id="checkout1">
 
             </div>
 
-            <div class="checkout2" id="checkout2" style="display: none;">
-
-                <!--
-
-                <div class="amount-given">
-
-                    <span>
-                        <h5>Amount Given:</h5>
-                    </span>
-
-                    <span class="amount">
-                        <h3>₱</h3>
-                        <h3>0.00</h3>
-                    </span>
-
-                </div>
-
-                <div class="change">
-
-                    <span>
-                        <h3>Change:</h3>
-                    </span>
-
-                    <span class="amount">
-                        <h1>₱</h1>
-                        <h1>0.00</h1>
-                    </span>
-
-                </div>
-
-                !-->
+            <div class="checkout2 d-none" id="checkout2">
 
             </div>
 
